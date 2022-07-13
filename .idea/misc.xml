@@ -8,6 +8,8 @@
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note.xml" value="0.35833333333333334" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_details.xml" value="0.35833333333333334" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_to_do.xml" value="0.35989583333333336" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.35520833333333335" />
+        <entry key="app/src/main/res/layout/fragment_note.xml" value="0.35520833333333335" />
       </map>
     </option>
   </component>
