@@ -105,6 +105,7 @@ public class NoteFragment extends Fragment {
         ft.commit();*/
 
         // ПЕРЕДЕЛАЛИ НА АКТИВИТИ:
+
         Activity activity = requireActivity();
         Intent intent = new Intent(activity, NoteDetailsActivity.class);
         intent.putExtra(SELECTED_INDEX, index);
