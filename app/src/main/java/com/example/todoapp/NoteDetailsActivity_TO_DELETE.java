@@ -7,12 +7,12 @@ import android.os.Bundle;
 import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
 
-public class NoteDetailsActivity extends AppCompatActivity {
+public class NoteDetailsActivity_TO_DELETE extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_note_details);
+        setContentView(R.layout.activity_note_details_to_delete);
 
         // Эта активити для ландшафтного дизайна. По-этому при переходе в лэндскейп нам надо убить
         // эту активити
@@ -25,7 +25,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_container_IN_NEW_NOTE_DETAILS_ACTIVITY,
-                            NoteDetailsFragment.newInstance(getIntent().getExtras().getInt(SELECTED_NOTE)))
+                            NoteDetailsFragment.newInstance(getIntent().getExtras().getParcelable(SELECTED_NOTE)))
                     .commit();
 
 

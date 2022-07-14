@@ -11,10 +11,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class Note implements iNote, Parcelable {
 
-    private static final Random random = new Random(); // ????
     // статический массив - когда мы запускаем прилож, мы в сатическом инициализаторе инициализируем
     // массив из 10 заметок. Проходим по кажд элементу массива и через ФАБРИЧНЫЙ МЕТОД инициализируем
     // каждую заметку. И, благодаря, итератору i мы обзываем кажд заметку. (заметка 1, заметка 2 ...)
@@ -22,6 +20,13 @@ public class Note implements iNote, Parcelable {
     private String title;
     private String description;
     private LocalDateTime dateTime;
+
+    private int id;
+    private static int counter; // СТАТИЧЕСКИЙ СЧЕТЧИК
+
+    public int getId() {
+        return id;
+    }
 
     @Override
     public void setTitle(String title) {
@@ -44,9 +49,12 @@ public class Note implements iNote, Parcelable {
         this.dateTime = dateTime;
     }
 
-
+    // Нестатический инициализатор:
+    {   // Кажд раз перед тем как мы инициализируем конструктор КЛАССА, мы идентифицируем наш идентификатор.
+        // Он при передаче посылки СОХРАНИТСЯ! (идентификаторы НЕ ПОПЛЫВУТ)
+        id = ++counter;
+    }
     // статический блок инициализации:
-
     // отрабатывает 1 раз перед стартом В ПЕРВУЮ ОЧЕРЕДЬ
     static {
         notes = new Note[10];
@@ -73,15 +81,11 @@ public class Note implements iNote, Parcelable {
 
     // ФАБРИЧНЫЙ МЕТОД ПОЛУЧЕНИЯ ОБЪЕКТА: он возвращает NOTE
     // на вход ему приходит какой-то индекс
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("DefaultLocale")
     public static Note getNote(int index) {
         String title = String.format("Note %d", index);
         String description = String.format("Description of note %d", index);
-        LocalDateTime dateTime = null;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            dateTime = LocalDateTime.now().plusDays(-random.nextInt(5));
-        }
+        LocalDateTime dateTime = LocalDateTime.now();
         return new Note(title, description, dateTime);
     }
 
@@ -91,25 +95,23 @@ public class Note implements iNote, Parcelable {
         return 0;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(getId());
         parcel.writeString(getTitle());
         parcel.writeString(getDescription());
         parcel.writeSerializable(getDateTime());
     }
 
     // Вспомогательный конструктор для заполнения ОБЪЕКТА соответствующими значениями
-    @RequiresApi(api = Build.VERSION_CODES.O)
     protected Note(Parcel in) {
+        id = in.readInt();
         title = in.readString();
         description = in.readString();
         dateTime = (LocalDateTime) in.readSerializable();
-
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
-        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public Note createFromParcel(Parcel in) {
             return new Note(in);

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tool="http://schemas.android.com/tools"
-    tool:context=".NoteDetailsActivity">
+    tool:context=".NoteDetailsActivity_TO_DELETE">
 
     <TextView
         android:id="@+id/title_main"

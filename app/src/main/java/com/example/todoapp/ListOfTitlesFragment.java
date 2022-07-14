@@ -1,7 +1,5 @@
 package com.example.todoapp;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -19,15 +17,16 @@ import android.widget.TextView;
 
 import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
-public class NoteFragment extends Fragment {
+public class ListOfTitlesFragment extends Fragment {
 
     // int selectedIndex = 0;
     // Переделаем, чтобы передавались ОБЪЕКТЫ
     Note note;
+    View dataContainer;
 
     @Override // РАЗОБРАТЬСЯ!!!!!!!!!!!!!!
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putSerializable(SELECTED_NOTE, note);
+        outState.putParcelable(SELECTED_NOTE, note);
         super.onSaveInstanceState(outState);
     }
 
@@ -40,7 +39,11 @@ public class NoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note, container, false);
+        return inflater.inflate(R.layout.fragment_list_of_titles, container, false);
+    }
+
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override // CALLBACK - вызывается когда ФРАГМЕНТ уже СОЗДАН
@@ -50,24 +53,27 @@ public class NoteFragment extends Fragment {
         if (savedInstanceState != null) {
             //selectedIndex = savedInstanceState.getInt(SELECTED_NOTE, 0);
             // переделаем на ОБЪЕКТ:
-            note = (Note) savedInstanceState.getSerializable(SELECTED_NOTE);
+            //note = (Note) savedInstanceState.getSerializable(SELECTED_NOTE);
+            note = savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-
-        View dataContainer = view.findViewById(R.id.fragment_note_container);
+        dataContainer = view.findViewById(R.id.fragment_note_container);
         initNotes(dataContainer);
 
         if (isLandscape()) {
             //showNoteDetailsFragmentLandscape(selectedIndex);
-            showNoteDetailsFragmentLandscape(note);        }
+            showNoteDetailsFragmentLandscape(note);
+        }
     }
 
-    private boolean isLandscape() {
-        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    // ПЕРЕГРУЖЕННЫЙ МЕТОД (????????????? для чего?)
+    public void initNotes() {
+        initNotes(dataContainer);
     }
 
     private void initNotes(View view) {
         LinearLayout linearLayout = (LinearLayout) view;
+        linearLayout.removeAllViews(); // ????????????????????????????
         // создаём список заметок на экране из массива в ресурсах
         //String[] notes = getResources().getStringArray(R.array.notes_array);
         // В этом цикле создаём элемент TextView,
@@ -81,24 +87,34 @@ public class NoteFragment extends Fragment {
 
             int index = i;
             tVnoteTitle.setOnClickListener(view1 -> {
-                showNoteDetailsFragment(index);
+                showNoteDetailsFragment(Note.getNotes()[index]);
             });
         }
     }
 
-    private void showNoteDetailsFragment(int index) {
+    private void showNoteDetailsFragment(Note note) {
+        this.note = note;
+        if (isLandscape()) {
+            showNoteDetailsFragmentLandscape(note);
+        } else {
+            showNoteDetailsFragmentPortrait(note);
+        }
+    }
+
+    // МЕТОД УСТАРЕЛ, потому что мы избавились от индексов
+  /*  private void showNoteDetailsFragment(int index) {
         selectedIndex = index; // wtf?????
         if (isLandscape()) {
             showNoteDetailsFragmentLandscape(index);
         } else {
             showNoteDetailsFragmentPortrait(index);
         }
-    }
+    }*/
 
-    private void showNoteDetailsFragmentPortrait(int index) {
+    //private void showNoteDetailsFragmentPortrait(int index) {
+    private void showNoteDetailsFragmentPortrait(Note note) {
 
-        /*NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(index);
-        // WTF requireActivity ????????????????????
+        NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         // put fragment in MAIN ACTIVITY:
@@ -107,29 +123,16 @@ public class NoteFragment extends Fragment {
         ft.addToBackStack("");
         // wtf ????????????
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();*/
+        ft.commit();
 
         // ПЕРЕДЕЛАЛИ НА АКТИВИТИ:
-
-        Activity activity = requireActivity();
+        /*Activity activity = requireActivity();
         Intent intent = new Intent(activity, NoteDetailsActivity.class);
-        intent.putExtra(SELECTED_NOTE, index);
-        startActivity(intent);
+        //intent.putExtra(SELECTED_NOTE, index);
+        intent.putExtra(SELECTED_NOTE, note);
+        startActivity(intent);*/
     }
 
-    private void showNoteDetailsFragmentLandscape(int index) {
-        NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(index);
-        // WTF requireActivity ????????????????????
-        FragmentManager fm = requireActivity().getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        // put fragment in MAIN ACTIVITY:
-        ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
-        // wtf ????????????
-        //ft.addToBackStack("");
-        // wtf ????????????
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
-    }
     // ПЕРЕГРУЖЕННЫЙ МЕТОД ДЛЯ ПРИНЯТИЯ ОБЪЕКТОВ:
     private void showNoteDetailsFragmentLandscape(Note note) {
         NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
@@ -144,4 +147,19 @@ public class NoteFragment extends Fragment {
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
+
+    // УСТАРЕВШИЙ МЕТОД:
+    /*private void showNoteDetailsFragmentLandscape(int index) {
+        NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(index);
+        // WTF requireActivity ????????????????????
+        FragmentManager fm = requireActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        // put fragment in MAIN ACTIVITY:
+        ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
+        // wtf ????????????
+        //ft.addToBackStack("");
+        // wtf ????????????
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }*/
 }
