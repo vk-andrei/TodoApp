@@ -17,15 +17,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import static com.example.todoapp.NoteDetailsFragment.SELECTED_INDEX;
+import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
 public class NoteFragment extends Fragment {
 
-    int selectedIndex = 0;
+    // int selectedIndex = 0;
+    // Переделаем, чтобы передавались ОБЪЕКТЫ
+    Note note;
 
     @Override // РАЗОБРАТЬСЯ!!!!!!!!!!!!!!
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt(SELECTED_INDEX, selectedIndex);
+        outState.putSerializable(SELECTED_NOTE, note);
         super.onSaveInstanceState(outState);
     }
 
@@ -46,15 +48,18 @@ public class NoteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState != null) {
-            selectedIndex = savedInstanceState.getInt(SELECTED_INDEX, 0);
+            //selectedIndex = savedInstanceState.getInt(SELECTED_NOTE, 0);
+            // переделаем на ОБЪЕКТ:
+            note = (Note) savedInstanceState.getSerializable(SELECTED_NOTE);
         }
+
 
         View dataContainer = view.findViewById(R.id.fragment_note_container);
         initNotes(dataContainer);
 
         if (isLandscape()) {
-            showNoteDetailsFragmentLandscape(selectedIndex);
-        }
+            //showNoteDetailsFragmentLandscape(selectedIndex);
+            showNoteDetailsFragmentLandscape(note);        }
     }
 
     private boolean isLandscape() {
@@ -97,7 +102,7 @@ public class NoteFragment extends Fragment {
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         // put fragment in MAIN ACTIVITY:
-        ft.replace(R.id.main_container, mNoteDetailsFragment);
+        ft.add(R.id.main_container, mNoteDetailsFragment);
         // wtf ????????????
         ft.addToBackStack("");
         // wtf ????????????
@@ -108,7 +113,7 @@ public class NoteFragment extends Fragment {
 
         Activity activity = requireActivity();
         Intent intent = new Intent(activity, NoteDetailsActivity.class);
-        intent.putExtra(SELECTED_INDEX, index);
+        intent.putExtra(SELECTED_NOTE, index);
         startActivity(intent);
     }
 
@@ -120,7 +125,21 @@ public class NoteFragment extends Fragment {
         // put fragment in MAIN ACTIVITY:
         ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
         // wtf ????????????
-        ft.addToBackStack("");
+        //ft.addToBackStack("");
+        // wtf ????????????
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+    // ПЕРЕГРУЖЕННЫЙ МЕТОД ДЛЯ ПРИНЯТИЯ ОБЪЕКТОВ:
+    private void showNoteDetailsFragmentLandscape(Note note) {
+        NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
+        // WTF requireActivity ????????????????????
+        FragmentManager fm = requireActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        // put fragment in MAIN ACTIVITY:
+        ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
+        // wtf ????????????
+        // ft.addToBackStack("");
         // wtf ????????????
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import static com.example.todoapp.NoteDetailsFragment.SELECTED_INDEX;
+import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
 
 public class NoteDetailsActivity extends AppCompatActivity {
@@ -25,7 +25,7 @@ public class NoteDetailsActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.main_container_IN_NEW_NOTE_DETAILS_ACTIVITY,
-                            NoteDetailsFragment.newInstance(getIntent().getExtras().getInt(SELECTED_INDEX)))
+                            NoteDetailsFragment.newInstance(getIntent().getExtras().getInt(SELECTED_NOTE)))
                     .commit();
 
 

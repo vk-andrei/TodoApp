@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class NoteDetailsFragment extends Fragment {
 
-    static final String SELECTED_INDEX = "index";
+    static final String SELECTED_NOTE = "index";
 
     public NoteDetailsFragment() {
         // required empty public constructor.    wtf????
@@ -42,7 +42,7 @@ public class NoteDetailsFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            int index = arguments.getInt(SELECTED_INDEX);
+            int index = arguments.getInt(SELECTED_NOTE);
 
             TextView tV_title = view.findViewById(R.id.fragment_note_title);
 
@@ -69,7 +69,6 @@ public class NoteDetailsFragment extends Fragment {
             TextView tV_data = view.findViewById(R.id.fragment_note_data);
             //tV_data.setText(Note.getNotes()[index].getDateTime());
         }
-
     }
 
     // Фабричный метод создания фрагмента
@@ -80,7 +79,18 @@ public class NoteDetailsFragment extends Fragment {
 
         // Передача параметра через бандл
         Bundle args = new Bundle();
-        args.putInt(SELECTED_INDEX, index);
+        args.putInt(SELECTED_NOTE, index);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    // ПЕРЕГРУЖЕННЫЙ МЕТОД для создания ОБЪЕКТОВ по самому ОБЪЕКТУ
+    public static NoteDetailsFragment newInstance(Note note) {
+        // Создание фрагмента
+        NoteDetailsFragment fragment = new NoteDetailsFragment();
+        // Передача параметра через бандл
+        Bundle args = new Bundle();
+        args.putSerializable(SELECTED_NOTE, note);
         fragment.setArguments(args);
         return fragment;
     }
