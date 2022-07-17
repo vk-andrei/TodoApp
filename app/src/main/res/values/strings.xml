@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">TodoApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title">NOTES</string>
-    <string name="title_bottom">TITLE_BOTTOM</string>
+    <string name="title_bottom">Advertisement</string>
     <string name="text_btn_back">Back</string>
+    <string name="about_menu">About</string>
+    <string name="exit_menu">Exit</string>
+    <string name="about_program">This program allows you to save your notes. Planing your business and activities. If your will find some bugs or suggestions, please write on this e-mail: vk-andrei@mail.ru</string>
+    <string name="about_Ok">OK</string>
 </resources>

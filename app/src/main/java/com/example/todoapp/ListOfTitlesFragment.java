@@ -14,15 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
 public class ListOfTitlesFragment extends Fragment {
 
-    // int selectedIndex = 0;
-    // Переделаем, чтобы передавались ОБЪЕКТЫ
     Note note;
     View dataContainer;
+
+    public ListOfTitlesFragment() {
+    }
 
     @Override // РАЗОБРАТЬСЯ!!!!!!!!!!!!!!
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -51,13 +53,10 @@ public class ListOfTitlesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState != null) {
-            //selectedIndex = savedInstanceState.getInt(SELECTED_NOTE, 0);
-            // переделаем на ОБЪЕКТ:
-            //note = (Note) savedInstanceState.getSerializable(SELECTED_NOTE);
             note = savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        dataContainer = view.findViewById(R.id.fragment_note_container);
+        dataContainer = view.findViewById(R.id.fragment_list_of_notes_container);
         initNotes(dataContainer);
 
         if (isLandscape()) {
@@ -75,18 +74,17 @@ public class ListOfTitlesFragment extends Fragment {
         LinearLayout linearLayout = (LinearLayout) view;
         linearLayout.removeAllViews(); // ????????????????????????????
         // создаём список заметок на экране из массива в ресурсах
-        //String[] notes = getResources().getStringArray(R.array.notes_array);
         // В этом цикле создаём элемент TextView,
         // заполняем его значениями и добавляем на экран.
         // Note.getNotes() - array of our NOTES
         for (int i = 0; i < Note.getNotes().length; i++) {
             TextView tVnoteTitle = new TextView(getContext());
-            tVnoteTitle.setText(Note.getNote(i).getTitle());
+            tVnoteTitle.setText(Note.getNotes()[i].getTitle());
             tVnoteTitle.setTextSize(20);
             linearLayout.addView(tVnoteTitle);
 
-            int index = i;
-            tVnoteTitle.setOnClickListener(view1 -> {
+            final int index = i;
+            tVnoteTitle.setOnClickListener(v -> {
                 showNoteDetailsFragment(Note.getNotes()[index]);
             });
         }
@@ -101,36 +99,15 @@ public class ListOfTitlesFragment extends Fragment {
         }
     }
 
-    // МЕТОД УСТАРЕЛ, потому что мы избавились от индексов
-  /*  private void showNoteDetailsFragment(int index) {
-        selectedIndex = index; // wtf?????
-        if (isLandscape()) {
-            showNoteDetailsFragmentLandscape(index);
-        } else {
-            showNoteDetailsFragmentPortrait(index);
-        }
-    }*/
-
-    //private void showNoteDetailsFragmentPortrait(int index) {
     private void showNoteDetailsFragmentPortrait(Note note) {
-
         NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         // put fragment in MAIN ACTIVITY:
         ft.add(R.id.main_container, mNoteDetailsFragment);
-        // wtf ????????????
         ft.addToBackStack("");
-        // wtf ????????????
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
-
-        // ПЕРЕДЕЛАЛИ НА АКТИВИТИ:
-        /*Activity activity = requireActivity();
-        Intent intent = new Intent(activity, NoteDetailsActivity.class);
-        //intent.putExtra(SELECTED_NOTE, index);
-        intent.putExtra(SELECTED_NOTE, note);
-        startActivity(intent);*/
     }
 
     // ПЕРЕГРУЖЕННЫЙ МЕТОД ДЛЯ ПРИНЯТИЯ ОБЪЕКТОВ:
@@ -148,18 +125,4 @@ public class ListOfTitlesFragment extends Fragment {
         ft.commit();
     }
 
-    // УСТАРЕВШИЙ МЕТОД:
-    /*private void showNoteDetailsFragmentLandscape(int index) {
-        NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(index);
-        // WTF requireActivity ????????????????????
-        FragmentManager fm = requireActivity().getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        // put fragment in MAIN ACTIVITY:
-        ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
-        // wtf ????????????
-        //ft.addToBackStack("");
-        // wtf ????????????
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        ft.commit();
-    }*/
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Random;
 
-public class Note implements iNote, Parcelable {
+public class Note implements Parcelable, iNote  {
 
     // статический массив - когда мы запускаем прилож, мы в сатическом инициализаторе инициализируем
     // массив из 10 заметок. Проходим по кажд элементу массива и через ФАБРИЧНЫЙ МЕТОД инициализируем
@@ -89,7 +89,7 @@ public class Note implements iNote, Parcelable {
         return new Note(title, description, dateTime);
     }
 
-    /**** FROM PARCELABLE ****/
+    /**** PARCELABLE ****/
     @Override
     public int describeContents() {
         return 0;
