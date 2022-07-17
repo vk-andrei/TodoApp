@@ -8,7 +8,9 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
+import java.sql.Array;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Note implements Parcelable, iNote  {
@@ -16,7 +18,8 @@ public class Note implements Parcelable, iNote  {
     // статический массив - когда мы запускаем прилож, мы в сатическом инициализаторе инициализируем
     // массив из 10 заметок. Проходим по кажд элементу массива и через ФАБРИЧНЫЙ МЕТОД инициализируем
     // каждую заметку. И, благодаря, итератору i мы обзываем кажд заметку. (заметка 1, заметка 2 ...)
-    private static Note[] notes;
+    //private static Note[] notes;
+    private static final ArrayList<Note> notes;
     private String title;
     private String description;
     private LocalDateTime dateTime;
@@ -57,9 +60,9 @@ public class Note implements Parcelable, iNote  {
     // статический блок инициализации:
     // отрабатывает 1 раз перед стартом В ПЕРВУЮ ОЧЕРЕДЬ
     static {
-        notes = new Note[10];
-        for (int i = 0; i < notes.length; i++) {
-            notes[i] = Note.getNote(i);
+        notes = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            notes.add(Note.getNote(i));
         }
     }
 
@@ -75,7 +78,7 @@ public class Note implements Parcelable, iNote  {
         return dateTime;
     }
 
-    public static Note[] getNotes() {
+    public static ArrayList<Note> getNotes() {
         return notes;
     }
 

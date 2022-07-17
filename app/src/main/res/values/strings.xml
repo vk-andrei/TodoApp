@@ -7,4 +7,7 @@
     <string name="exit_menu">Exit</string>
     <string name="about_program">This program allows you to save your notes. Planing your business and activities. If your will find some bugs or suggestions, please write on this e-mail: vk-andrei@mail.ru</string>
     <string name="about_Ok">OK</string>
+    <string name="delete_menu">delete</string>
+    <string name="title_toolbar_text">Mine Notes</string>
+    <string name="delete_menu_popup">delete</string>
 </resources>

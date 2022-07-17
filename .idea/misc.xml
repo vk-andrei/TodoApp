@@ -7,7 +7,7 @@
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/activity_maim.xml" value="0.246875" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/activity_main.xml" value="0.222663139329806" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/fragment_note_details.xml" value="0.222663139329806" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_main.xml" value="0.17502532928064843" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_main.xml" value="0.23385416666666667" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_note_details.xml" value="0.2630208333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_about.xml" value="0.27239583333333334" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_list_of_titles.xml" value="0.23777173913043478" />
@@ -16,6 +16,7 @@
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_to_do.xml" value="0.35989583333333336" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/main_menu.xml" value="0.27239583333333334" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/note_menu.xml" value="0.2604166666666667" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/note_popup.xml" value="0.2328125" />
       </map>
     </option>
   </component>

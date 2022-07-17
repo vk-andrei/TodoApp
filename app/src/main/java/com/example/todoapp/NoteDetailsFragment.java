@@ -1,15 +1,14 @@
 package com.example.todoapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class NoteDetailsFragment extends Fragment {
 
@@ -38,10 +37,6 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (1)
-        setHasOptionsMenu(true);
-
         /*if (savedInstanceState != null) {
             requireActivity().getSupportFragmentManager().popBackStack();
         }*/
@@ -58,12 +53,47 @@ public class NoteDetailsFragment extends Fragment {
         if (menuItemExit != null) {
             menuItemExit.setVisible(false);
         }
+        // И меню ABOUT тоже уберем:
+        MenuItem menuItemAbout = menu.findItem(R.id.menu_action_about);
+        if (menuItemAbout != null) {
+            menuItemAbout.setVisible(false);
+        }
+
+        // А это СОБСТВЕННОЕ меню ФРАГМЕНТА
+        inflater.inflate(R.menu.note_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_action_delete) {
+            // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
+            Note.getNotes().remove(note);
+            updateData();
+            if (!isLandscape()) {
+                requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
+            } else { // Указываем фокус на ЗАМЕТКУ под номером 0
+                if (Note.getNotes().size() > 1) {
+                    note = Note.getNotes().get(0);
+                }
+            }
+            return true; // без этого тоже работает. Что логично.
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Создает ТОЛЬКО ОДИН РАЗ (а то будет постоянно создавать эти меню!)
+        if (savedInstanceState == null) {
+            // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (1)
+            setHasOptionsMenu(true);
+        }
         return inflater.inflate(R.layout.fragment_note_details, container, false);
     }
 
@@ -74,16 +104,31 @@ public class NoteDetailsFragment extends Fragment {
         Bundle arguments = getArguments();
 
         Button btnBack = view.findViewById(R.id.fragment_note_detail_btn);
-        btnBack.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack(); // УБИРАЕТ ФРАГМЕНТ ЖЕ?
-        });
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                requireActivity().getSupportFragmentManager().popBackStack(); // УБИРАЕТ ФРАГМЕНТ ЖЕ?
+            });
+        }
 
         if (arguments != null) {
-
             Note paramNote = arguments.getParcelable(SELECTED_NOTE);
             // найдем ИМЕННО ТУ ЗАМЕТКУ по НАЗВАНИЮ путем перебора всех заметок:
-            note = Arrays.stream(Note.getNotes()).filter(n -> n.getId() == paramNote.getId()).findFirst().get();
+            // note = Arrays.stream(Note.getNotes()).filter(n -> n.getId() == paramNote.getId()).findFirst().get();
+            // note = Note.getNotes().stream().filter(note1 -> note1.getId() == paramNote.getId()).findFirst().get();
 
+            if (paramNote != null) {
+                // Проверим существует ли еще заметка?
+                Optional<Note> selectedNote = Note.getNotes().stream().filter(note1 -> note1.getId() == paramNote.getId()).findFirst();
+                /*if (selectedNote.isPresent()) {
+                    note = selectedNote.get();
+                } else {
+                    note = Note.getNotes().get(0);
+                }*/
+                // ТОЖЕ САМОЕ:
+                note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
+            } else { // САМ ДОБАВИЛ. ПРАВИЛЬНО ЖЕ????
+                note = Note.getNotes().get(0);
+            }
 
             TextView tV_title = view.findViewById(R.id.fragment_note_title);
             tV_title.setText(note.getTitle());

@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- MINE AppBarLayout for CUSTOM TOOLBAR. Его надо инициализировать в MainActivity -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/mine_toolbar_appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintBottom_toTopOf="@+id/title_main"
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- MINE CUSTOM TOOLBAR -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/mine_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="@string/title_toolbar_text"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
         android:id="@+id/title_main"
         android:layout_width="0dp"
@@ -11,10 +32,11 @@
         android:background="@color/teal_200"
         android:text="@string/title"
         android:textAlignment="center"
-        android:textSize="40sp"
+        android:textSize="@dimen/height_of_main_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/mine_toolbar_appBarLayout" />
+
     <FrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
@@ -24,7 +46,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_main">
+
     </FrameLayout>
+
     <TextView
         android:id="@+id/title_bottom_main"
         android:layout_width="0dp"
@@ -32,7 +56,7 @@
         android:background="@color/teal_200"
         android:text="@string/title_bottom"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="@dimen/height_of_main_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

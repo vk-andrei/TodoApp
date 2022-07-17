@@ -2,6 +2,7 @@ package com.example.todoapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolBar();
+
         if (savedInstanceState == null) {
             ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
             FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -25,6 +28,13 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    // Инициализация своего КАСТОМНОГО ТУЛБАРА
+    private void initToolBar() {
+        Toolbar toolbar = findViewById(R.id.mine_toolbar);
+        setSupportActionBar(toolbar);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

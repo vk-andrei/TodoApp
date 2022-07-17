@@ -1,5 +1,6 @@
 package com.example.todoapp;
 
+import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -10,9 +11,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,21 +76,54 @@ public class ListOfTitlesFragment extends Fragment {
     private void initNotes(View view) {
         LinearLayout linearLayout = (LinearLayout) view;
         linearLayout.removeAllViews(); // ????????????????????????????
-        // создаём список заметок на экране из массива в ресурсах
         // В этом цикле создаём элемент TextView,
         // заполняем его значениями и добавляем на экран.
         // Note.getNotes() - array of our NOTES
-        for (int i = 0; i < Note.getNotes().length; i++) {
+        for (int i = 0; i < Note.getNotes().size(); i++) {
             TextView tVnoteTitle = new TextView(getContext());
-            tVnoteTitle.setText(Note.getNotes()[i].getTitle());
+            //tVnoteTitle.setText(Note.getNotes()[i].getTitle());
+            tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
             tVnoteTitle.setTextSize(20);
             linearLayout.addView(tVnoteTitle);
 
             final int index = i;
+
+            initPopupmenu(linearLayout, tVnoteTitle, index);
+
             tVnoteTitle.setOnClickListener(v -> {
-                showNoteDetailsFragment(Note.getNotes()[index]);
+                //showNoteDetailsFragment(Note.getNotes()[index]);
+                showNoteDetailsFragment(Note.getNotes().get(index));
             });
         }
+    }
+
+    // Тут Меню POPUP нужно нам чтобы УДАЛИТЬ элемент:
+    // а именно: удалить из коллекции И удалить текстовое поле с ним немедленно по кот. кликаем
+    // для этого сделаем метод, в кот передадим:
+    // 1. рутовое View. Контейнер где это все нах-ся
+    // 2. каком элементе мы его вызываем
+    // 3. index заметки
+    private void initPopupmenu(LinearLayout rootView, TextView tv, int index) {
+        tv.setOnLongClickListener(v -> {
+            Activity activity = requireActivity();
+            PopupMenu popupMenu = new PopupMenu(activity, tv);
+            activity.getMenuInflater().inflate(R.menu.note_popup, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.action_popup_delete:
+                            Note.getNotes().remove(index);
+                            rootView.removeView(tv);
+                            break;
+                    }
+                    return true;
+                }
+            });
+            popupMenu.show();
+            return true;
+        });
     }
 
     private void showNoteDetailsFragment(Note note) {
