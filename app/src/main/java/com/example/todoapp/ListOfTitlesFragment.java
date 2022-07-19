@@ -31,6 +31,13 @@ public class ListOfTitlesFragment extends Fragment {
 
     @Override // РАЗОБРАТЬСЯ!!!!!!!!!!!!!!
     public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        if (note == null) {
+            if (Note.getNotes().size() > 0) {
+                note = Note.getNotes().get(0);
+            }
+        }
+
         outState.putParcelable(SELECTED_NOTE, note);
         super.onSaveInstanceState(outState);
     }
