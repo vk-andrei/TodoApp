@@ -91,6 +91,7 @@ public class ListOfTitlesFragment extends Fragment {
             //tVnoteTitle.setText(Note.getNotes()[i].getTitle());
             tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
             tVnoteTitle.setTextSize(20);
+            //tVnoteTitle.setSingleLine(true);
             linearLayout.addView(tVnoteTitle);
 
             final int index = i;

@@ -7,4 +7,6 @@
         android:title="@string/delete_menu"
         app:showAsAction="ifRoom" />
 
+
+
 </menu>

@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@color/teal_700"
-    android:gravity="center"
+    android:layout_height="160dp"
+    android:background="@drawable/nav_bar_drawer_fon"
+    android:gravity="bottom"
     android:orientation="vertical"
-    >
+    android:padding="15dp">
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="Image"
+        android:src="@android:drawable/ic_dialog_email" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TITLE"
-        android:textSize="30sp" />
+        android:text="@string/title"
+        android:textSize="30sp"
+        android:textStyle="italic|bold" />
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="Image"
-        android:src="@android:drawable/ic_dialog_email" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textSize="16sp" />
+
 
 </LinearLayout>

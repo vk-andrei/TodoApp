@@ -49,14 +49,19 @@ public class NoteDetailsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         // Например, хотим, чтобы меню EXIT не было доступно в нашем фрагменте
-        MenuItem menuItemExit = menu.findItem(R.id.menu_action_exit);
+ /*       MenuItem menuItemExit = menu.findItem(R.id.menu_action_exit);
         if (menuItemExit != null) {
             menuItemExit.setVisible(false);
-        }
+        }*/
         // И меню ABOUT тоже уберем:
         MenuItem menuItemAbout = menu.findItem(R.id.menu_action_about);
         if (menuItemAbout != null) {
             menuItemAbout.setVisible(false);
+        }
+        // И меню FIND тоже уберем:
+        MenuItem menuItemFind = menu.findItem(R.id.menu_action_find);
+        if (menuItemFind != null) {
+            menuItemFind.setVisible(false);
         }
 
         // А это СОБСТВЕННОЕ меню ФРАГМЕНТА

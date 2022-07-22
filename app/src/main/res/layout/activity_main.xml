@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <!-- НЕПОНЯТНО ДЛЯ ЧЕГО ЭТА ОБЕРТКА??? -->
@@ -12,10 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <!-- MINE AppBarLayout for CUSTOM TOOLBAR. Его надо инициализировать в MainActivity -->
             <com.google.android.material.appbar.AppBarLayout
@@ -35,18 +35,17 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:title="@string/title_toolbar_text"
                     app:titleTextColor="@color/white" />
+
             </com.google.android.material.appbar.AppBarLayout>
 
             <TextView
                 android:id="@+id/title_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/teal_200"
+                android:background="@color/blueBell"
                 android:text="@string/title"
                 android:textAlignment="center"
                 android:textSize="@dimen/height_of_main_title"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mine_toolbar_appBarLayout" />
 
             <FrameLayout
@@ -63,17 +62,16 @@
             <TextView
                 android:id="@+id/title_bottom_main"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:background="@color/teal_200"
+                android:layout_height="wrap_content"
+                android:background="@color/blueBell"
                 android:text="@string/title_bottom"
                 android:textAlignment="center"
                 android:textSize="@dimen/height_of_main_title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/main_container" />
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
@@ -83,10 +81,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_menu_header"
+        app:menu="@menu/drawer_menu"
+        app:itemIconTint="@color/byzantine"
 
-        app:menu="@menu/drawer_menu" />
-
+        />
 
 </androidx.drawerlayout.widget.DrawerLayout>

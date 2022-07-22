@@ -3,17 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/nav_bar_drawer_fon.xml" value="0.262" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/title_fragment.xml" value="0.3155" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/activity_maim.xml" value="0.246875" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/activity_main.xml" value="0.222663139329806" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/activity_main.xml" value="0.2054673721340388" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout-land/fragment_note_details.xml" value="0.222663139329806" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_main.xml" value="0.278125" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_main.xml" value="0.23385416666666667" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/activity_note_details.xml" value="0.2630208333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/drawer_menu_header.xml" value="0.24635416666666668" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_about.xml" value="0.27239583333333334" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_list_of_titles.xml" value="0.23777173913043478" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_list_of_titles.xml" value="0.16041666666666668" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note.xml" value="0.2630208333333333" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_details.xml" value="0.19021739130434784" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_details.xml" value="0.24270833333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_to_do.xml" value="0.35989583333333336" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_header_menu.xml" value="0.24635416666666668" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_menu.xml" value="0.24635416666666668" />
