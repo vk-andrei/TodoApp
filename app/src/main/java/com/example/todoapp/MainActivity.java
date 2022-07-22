@@ -1,17 +1,27 @@
 package com.example.todoapp;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Build;
+import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
 
 
     @Override
@@ -19,13 +29,143 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolBar(isLandscape());
+
         if (savedInstanceState == null) {
-            NoteFragment noteFragment = new NoteFragment();
+            ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
             FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
             mFragmentTransaction
-                    .replace(R.id.main_container, noteFragment)
+                    .add(R.id.main_container, listOfTitlesFragment)
                     .commit();
+        }
+    }
 
+    // Инициализация своего КАСТОМНОГО ТУЛБАРА
+    private void initToolBar(boolean isLandscape) {
+        Toolbar toolbar = findViewById(R.id.mine_toolbar);
+        setSupportActionBar(toolbar);
+        // DRAWER зависит от TOOLBAR поэтому засунем ему тулбар
+        if (!isLandscape) {
+            initDrawerToolBar(toolbar);
+        }
+    }
+
+    private void initDrawerToolBar(Toolbar toolbar) {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
+                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        // связываем ЭТИ два объекта
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.drawer_navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                drawerLayout = findViewById(R.id.drawer_layout);
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.action_drawer_add_new_note:
+                        addNewNote();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.action_drawer_settings:
+                        openSettingsFragment();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.action_drawer_about:
+                        openAboutFragment();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.action_drawer_exit:
+                        finish();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                    case R.id.action_drawer_share:
+                        share();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void openAboutFragment() {
+        AboutFragment aboutFragment = new AboutFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm
+                .beginTransaction()
+                .addToBackStack("")
+                .add(R.id.main_container, aboutFragment)
+                .commit();
+    }
+
+    private boolean isLandscape() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    // МЕНЮ СПРАВА (три точки)
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // ПРИМЕНЯЕМ МЕНЮ (НАДУВАЕМ)
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Обрабатываем события по нажатиям на пункты МЕНЮ
+
+        int idItemMenu = item.getItemId();
+
+        switch (idItemMenu) {
+            case R.id.menu_add_new_note:
+                addNewNote();
+                break;
+            case R.id.menu_action_settings:
+                openSettingsFragment();
+                break;
+            case R.id.menu_action_about:
+                openAboutFragment();
+                break;
+            case R.id.menu_action_find:
+                openFindNote();
+                break;
+            case R.id.menu_action_exit:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void openFindNote() {
+        Toast.makeText(this, "TODO FIND Note", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openSettingsFragment() {
+        Toast.makeText(this, "TODO SETTINGS fragment", Toast.LENGTH_SHORT).show();
+    }
+
+    private void addNewNote() {
+        Toast.makeText(this, "TODO adding a new note", Toast.LENGTH_SHORT).show();
+    }
+
+    private void share() {
+        Toast.makeText(this, "TODO SHARE a note", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
 
 
