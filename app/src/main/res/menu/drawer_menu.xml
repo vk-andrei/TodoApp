@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <group>
+    <group android:id="@+id/group_1">
         <item
             android:id="@+id/action_drawer_add_new_note"
             android:icon="@android:drawable/ic_input_add"

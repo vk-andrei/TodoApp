@@ -1,5 +1,6 @@
 package com.example.todoapp;
 
+import android.annotation.SuppressLint;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -68,16 +71,23 @@ public class NoteDetailsFragment extends Fragment {
         inflater.inflate(R.menu.note_menu, menu);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_action_delete) {
             // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
             Note.getNotes().remove(note);
+            //note=null;              ?????????????????????????
+
+            View view = getView();
+            assert view != null;
+            Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
+
             updateData();
             if (!isLandscape()) {
                 requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
             } else { // Указываем фокус на ЗАМЕТКУ под номером 0
-                if (Note.getNotes().size() > 1) {
+                if (Note.getNotes().size() > 0) {
                     note = Note.getNotes().get(0);
                 }
             }

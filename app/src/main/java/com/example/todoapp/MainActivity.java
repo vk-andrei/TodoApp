@@ -52,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawerToolBar(Toolbar toolbar) {
         drawerLayout = findViewById(R.id.drawer_layout);
+        // Создаем ActionBarDrawerToggle
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
                 toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         // связываем ЭТИ два объекта
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-
+        // Обработка навигационного меню
         NavigationView navigationView = findViewById(R.id.drawer_navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")

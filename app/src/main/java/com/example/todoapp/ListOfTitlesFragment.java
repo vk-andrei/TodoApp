@@ -1,5 +1,6 @@
 package com.example.todoapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Optional;
 
 public class ListOfTitlesFragment extends Fragment {
 
@@ -63,7 +68,11 @@ public class ListOfTitlesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState != null) {
-            note = savedInstanceState.getParcelable(SELECTED_NOTE);
+            Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
+            Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
+
+            note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
+            //note = savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
         dataContainer = view.findViewById(R.id.fragment_list_of_notes_container);
@@ -118,12 +127,14 @@ public class ListOfTitlesFragment extends Fragment {
             activity.getMenuInflater().inflate(R.menu.note_popup, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @SuppressLint("ShowToast")
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.action_popup_delete:
                             Note.getNotes().remove(index);
                             rootView.removeView(tv);
+                            Snackbar.make(rootView, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
                             break;
                     }
                     return true;

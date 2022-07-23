@@ -13,6 +13,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
 
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
 
         <!-- Customize your theme here. -->
         <item name="actionOverflowButtonStyle">@style/actionOverFlowButtonStyle</item>
@@ -21,6 +24,7 @@
     </style>
 
     <style name="actionOverFlowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+
         <item name="android:tint">@color/white</item>
     </style>
 
