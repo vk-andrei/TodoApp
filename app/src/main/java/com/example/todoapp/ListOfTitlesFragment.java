@@ -120,22 +120,23 @@ public class ListOfTitlesFragment extends Fragment {
     // 1. рутовое View. Контейнер где это все нах-ся
     // 2. каком элементе мы его вызываем
     // 3. index заметки
-    private void initPopupmenu(LinearLayout rootView, TextView tv, int index) {
+    private void initPopupmenu(View rootView, TextView tv, int index) {
         tv.setOnLongClickListener(v -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, tv);
             activity.getMenuInflater().inflate(R.menu.note_popup, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @SuppressLint("ShowToast")
+                @SuppressLint("NonConstantResourceId")
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.action_popup_delete:
                             Note.getNotes().remove(index);
-                            rootView.removeView(tv);
+                            ((LinearLayout) rootView).removeView(tv);
+                            note = Note.getNote(index);
                             Snackbar.make(rootView, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
-                            break;
+                            return true;
                     }
                     return true;
                 }

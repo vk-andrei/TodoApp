@@ -10,14 +10,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Application;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDrawerToolBar(Toolbar toolbar) {
+
+
         drawerLayout = findViewById(R.id.drawer_layout);
         // Создаем ActionBarDrawerToggle
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
@@ -92,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void openAboutFragment() {
         AboutFragment aboutFragment = new AboutFragment();
@@ -137,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 openFindNote();
                 break;
             case R.id.menu_action_exit:
+
                 finish();
                 break;
         }

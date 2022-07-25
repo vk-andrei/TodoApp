@@ -1,6 +1,8 @@
 package com.example.todoapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -75,25 +77,36 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_action_delete) {
-            // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
-            Note.getNotes().remove(note);
-            //note=null;              ?????????????????????????
 
-            View view = getView();
-            assert view != null;
-            Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Alert!")
+                    .setMessage("Do you really want to this delete note?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
+                            Note.getNotes().remove(note);
+                            //note=null;              ?????????????????????????
 
-            updateData();
-            if (!isLandscape()) {
-                requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
-            } else { // Указываем фокус на ЗАМЕТКУ под номером 0
-                if (Note.getNotes().size() > 0) {
-                    note = Note.getNotes().get(0);
-                }
-            }
+                            View view = getView();
+                            assert view != null;
+                            Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
+
+                            updateData();
+                            if (!isLandscape()) {
+                                requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
+                            } else { // Указываем фокус на ЗАМЕТКУ под номером 0
+                                if (Note.getNotes().size() > 0) {
+                                    note = Note.getNotes().get(0);
+                                }
+                            }
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
             return true; // без этого тоже работает. Что логично.
         }
-
         return super.onOptionsItemSelected(item);
     }
 

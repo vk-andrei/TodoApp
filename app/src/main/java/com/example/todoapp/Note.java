@@ -61,7 +61,7 @@ public class Note implements Parcelable, iNote  {
     // отрабатывает 1 раз перед стартом В ПЕРВУЮ ОЧЕРЕДЬ
     static {
         notes = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 15; i++) {
             notes.add(Note.getNote(i));
         }
     }
