@@ -10,21 +10,15 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.action_drawer_exit:
-                        finish();
+
+                        showAlertDialogExit();
+
                         drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
                     case R.id.action_drawer_share:
@@ -100,6 +96,20 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void showAlertDialogExit() {
+        new AlertDialog.Builder(this)
+                .setTitle("Alert!")
+                .setMessage("Do you really want to Exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
 
