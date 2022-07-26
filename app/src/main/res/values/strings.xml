@@ -18,5 +18,7 @@
     <string name="find_menu">Find note</string>
     <string name="email">vk-andrei@mail.ru</string>
     <string name="share_menu">Share</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

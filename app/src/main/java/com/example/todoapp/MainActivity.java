@@ -84,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.action_drawer_exit:
 
-                        showAlertDialogExit();
+                        //showAlertDialogExit();
+                        showAlertDialogExitFragment();
 
                         drawerLayout.closeDrawer(GravityCompat.START);
                         return true;
@@ -98,18 +99,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // OLD
     private void showAlertDialogExit() {
         new AlertDialog.Builder(this)
                 .setTitle("Alert!")
                 .setMessage("Do you really want to Exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
+                .setPositiveButton("Yes", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    private void showAlertDialogExitFragment() {
+        new DialogAlertExitFragment().show(getSupportFragmentManager(), "TAG");
     }
 
 
