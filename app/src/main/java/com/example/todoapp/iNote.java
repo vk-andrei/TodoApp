@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public interface iNote {
 
-    Note setTitle(String title);
+    void setTitle(String title);
 
-    Note setDescription(String description);
+    void setDescription(String description);
 
-    Note setDate(LocalDateTime dateTime);
+    void setDate(LocalDateTime dateTime);
 }
