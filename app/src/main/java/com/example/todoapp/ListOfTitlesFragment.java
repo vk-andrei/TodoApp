@@ -136,6 +136,8 @@ public class ListOfTitlesFragment extends Fragment {
                             ((LinearLayout) rootView).removeView(tv);
                             note = Note.getNote(index);
                             Snackbar.make(rootView, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
+                            // без нижней строчки слетали индексы! в портретном режиме
+                            initNotes();
                             return true;
                     }
                     return true;
