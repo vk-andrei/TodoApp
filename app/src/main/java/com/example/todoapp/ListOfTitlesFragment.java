@@ -159,24 +159,17 @@ public class ListOfTitlesFragment extends Fragment {
         NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        // put fragment in MAIN ACTIVITY:
         ft.add(R.id.main_container, mNoteDetailsFragment);
         ft.addToBackStack("");
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
 
-    // ПЕРЕГРУЖЕННЫЙ МЕТОД ДЛЯ ПРИНЯТИЯ ОБЪЕКТОВ:
     private void showNoteDetailsFragmentLandscape(Note note) {
         NoteDetailsFragment mNoteDetailsFragment = NoteDetailsFragment.newInstance(note);
-        // WTF requireActivity ????????????????????
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        // put fragment in MAIN ACTIVITY:
         ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
-        // wtf ????????????
-        // ft.addToBackStack("");
-        // wtf ????????????
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }

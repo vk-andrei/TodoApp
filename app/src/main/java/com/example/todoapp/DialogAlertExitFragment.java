@@ -21,12 +21,7 @@ public class DialogAlertExitFragment extends DialogFragment {
         return new AlertDialog.Builder(activity)
                 .setTitle("Alert!")
                 .setMessage("Do you really want to Exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        activity.finish();
-                    }
-                })
+                .setPositiveButton("Yes", (dialog, which) -> activity.finish())
                 .setNegativeButton("No", null)
                 .create();
     }

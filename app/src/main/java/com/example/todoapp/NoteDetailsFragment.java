@@ -42,9 +42,11 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*if (savedInstanceState != null) {
+        // В момент создания нов фрагмента мы проверяем создается ли фрагмент впервые, и если да,
+        // то удаляем его из бэкстека
+        if (savedInstanceState != null) {
             requireActivity().getSupportFragmentManager().popBackStack();
-        }*/
+        }
     }
 
     // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (2)
@@ -115,7 +117,7 @@ public class NoteDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Создает ТОЛЬКО ОДИН РАЗ (а то будет постоянно создавать эти меню!)
         if (savedInstanceState == null) {

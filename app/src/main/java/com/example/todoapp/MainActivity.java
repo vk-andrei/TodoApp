@@ -179,19 +179,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void share() {
         Toast.makeText(this, "TODO SHARE a note", Toast.LENGTH_SHORT).show();
-
     }
 
 
     @Override
     public void onBackPressed() {
         drawerLayout = findViewById(R.id.drawer_layout);
+        // TODO solve problem here
+        // java.lang.NullPointerException: Attempt to invoke virtual method
+        // 'boolean androidx.drawerlayout.widget.DrawerLayout.isDrawerOpen(int)' on a null object reference
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-
-
     }
+
 }
