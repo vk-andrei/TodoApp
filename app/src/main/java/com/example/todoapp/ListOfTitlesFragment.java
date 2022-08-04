@@ -12,13 +12,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
 
@@ -120,33 +118,35 @@ public class ListOfTitlesFragment extends Fragment {
     // 1. рутовое View. Контейнер где это все нах-ся
     // 2. каком элементе мы его вызываем
     // 3. index заметки
+    @SuppressLint("NonConstantResourceId")
     private void initPopupmenu(View rootView, TextView tv, int index) {
         tv.setOnLongClickListener(v -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, tv);
             activity.getMenuInflater().inflate(R.menu.note_popup, popupMenu.getMenu());
 
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @SuppressLint("NonConstantResourceId")
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    switch (menuItem.getItemId()) {
-                        case R.id.action_popup_delete:
-                            Note.getNotes().remove(index);
-                            ((LinearLayout) rootView).removeView(tv);
-                            note = Note.getNote(index);
-                            Snackbar.make(rootView, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
-                            // без нижней строчки слетали индексы! в портретном режиме
-                            initNotes();
-                            return true;
-                    }
-                    return true;
+            popupMenu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_popup_delete:
+                        Note deletedNote = Note.getNotes().remove(index);
+                        ((LinearLayout) rootView).removeView(tv);
+                        note = Note.getNote(index);
+                        Snackbar.make(rootView, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT)
+                                .setAction(R.string.cancel_text, v1 -> {
+                                    Note.getNotes().add(deletedNote);
+                                    initNotes();
+                                })
+                                .show();
+                        initNotes(); // без этой строчки слетали индексы! в портретном режиме
+                        return true;
                 }
+                return true;
             });
             popupMenu.show();
             return true;
         });
     }
+
 
     private void showNoteDetailsFragment(Note note) {
         this.note = note;

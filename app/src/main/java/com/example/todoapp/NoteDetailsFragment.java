@@ -1,6 +1,7 @@
 package com.example.todoapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 public class NoteDetailsFragment extends Fragment {
@@ -47,6 +50,17 @@ public class NoteDetailsFragment extends Fragment {
         if (savedInstanceState != null) {
             requireActivity().getSupportFragmentManager().popBackStack();
         }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Создает ТОЛЬКО ОДИН РАЗ (а то будет постоянно создавать эти меню!)
+        if (savedInstanceState == null) {
+            // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (1)
+            setHasOptionsMenu(true);// доступ к меню (ТУЛБАРУ) АКТИВИТИ
+        }
+        return inflater.inflate(R.layout.fragment_note_details, container, false);
     }
 
     // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (2)
@@ -80,32 +94,35 @@ public class NoteDetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_action_delete) {
 
-            new AlertDialog.Builder(getContext())
-                    .setTitle("Alert!")
-                    .setMessage("Do you really want to this delete note?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
-                            Note.getNotes().remove(note);
-                            //note=null;              ?????????????????????????
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Alert!");
+            builder.setMessage("Do you really want to this delete note?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO при удалении убирать из ФРАГМЕНТА ДЕТАЛИЗАЦИИ удаленную заметку
+                    Note deletedNote = note;
+                    Note.getNotes().remove(note);
+                    View view = getView();
+                    assert view != null;
+                    Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT)
+                            /*.setAction(R.string.cancel_text, v -> {
+                                Note.getNotes().add(deletedNote);
+                                //updateData();*/
+                            .show();
+                    updateData();
 
-                            View view = getView();
-                            assert view != null;
-                            Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT).show();
-
-                            updateData();
-                            if (!isLandscape()) {
-                                requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
-                            } else { // Указываем фокус на ЗАМЕТКУ под номером 0
-                                if (Note.getNotes().size() > 0) {
-                                    note = Note.getNotes().get(0);
-                                }
-                            }
+                    if (!isLandscape()) {
+                        requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
+                    } else { // Указываем фокус на ЗАМЕТКУ под номером 0
+                        if (Note.getNotes().size() > 0) {
+                            note = Note.getNotes().get(0);
                         }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
+                    }
+                }
+            });
+            builder.setNegativeButton("No", null);
+            builder.show();
 
             return true; // без этого тоже работает. Что логично.
         }
@@ -114,17 +131,6 @@ public class NoteDetailsFragment extends Fragment {
 
     private boolean isLandscape() {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Создает ТОЛЬКО ОДИН РАЗ (а то будет постоянно создавать эти меню!)
-        if (savedInstanceState == null) {
-            // ЕСЛИ мы хотим увидеть ОПРЕДЕЛЕННОЕ МЕНЮ в рамках некоторого ФРАГМЕНТА: (1)
-            setHasOptionsMenu(true);
-        }
-        return inflater.inflate(R.layout.fragment_note_details, container, false);
     }
 
     @Override

@@ -34,6 +34,8 @@
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:title="@string/title_toolbar_text"
+                    app:subtitle="vk-andrei"
+                    app:subtitleTextColor="@color/black"
                     app:titleTextColor="@color/white" />
 
             </com.google.android.material.appbar.AppBarLayout>

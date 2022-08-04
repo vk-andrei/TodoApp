@@ -24,7 +24,6 @@
     </style>
 
     <style name="actionOverFlowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
-
         <item name="android:tint">@color/white</item>
     </style>
 

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.253" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/free-icon-font-pencil-3917376_24.xml" value="0.2435" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.253" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/nav_bar_drawer_fon.xml" value="0.262" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/drawable/title_fragment.xml" value="0.3155" />
@@ -19,6 +20,7 @@
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note.xml" value="0.2630208333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_details.xml" value="0.24270833333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_to_do.xml" value="0.35989583333333336" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/item.xml" value="0.67" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_header_menu.xml" value="0.24635416666666668" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_menu.xml" value="0.24635416666666668" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/main_menu.xml" value="0.27239583333333334" />

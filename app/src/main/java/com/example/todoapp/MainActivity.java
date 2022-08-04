@@ -113,17 +113,6 @@ public class MainActivity extends AppCompatActivity {
         new DialogAlertExitFragment().show(getSupportFragmentManager(), "TAG");
     }
 
-
-    private void openAboutFragment() {
-        AboutFragment aboutFragment = new AboutFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        fm
-                .beginTransaction()
-                .addToBackStack("")
-                .add(R.id.main_container, aboutFragment)
-                .commit();
-    }
-
     private boolean isLandscape() {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
@@ -147,20 +136,19 @@ public class MainActivity extends AppCompatActivity {
         switch (idItemMenu) {
             case R.id.menu_add_new_note:
                 addNewNote();
-                break;
+                return true;
             case R.id.menu_action_settings:
                 openSettingsFragment();
-                break;
+                return true;
             case R.id.menu_action_about:
                 openAboutFragment();
-                break;
+                return true;
             case R.id.menu_action_find:
                 openFindNote();
-                break;
+                return true;
             case R.id.menu_action_exit:
-
                 finish();
-                break;
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -171,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void openSettingsFragment() {
         Toast.makeText(this, "TODO SETTINGS fragment", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openAboutFragment() {
+        AboutFragment aboutFragment = new AboutFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        fm
+                .beginTransaction()
+                .addToBackStack("")
+                .add(R.id.main_container, aboutFragment)
+                .commit();
     }
 
     private void addNewNote() {
