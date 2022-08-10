@@ -92,13 +92,23 @@ public class ListOfTitlesFragment extends Fragment {
         // В этом цикле создаём элемент TextView,
         // заполняем его значениями и добавляем на экран.
         // Note.getNotes() - array of our NOTES
+
+        // При помощи этого объекта будем доставать элементы, спрятанные в item.xml
+        LayoutInflater inflater = getLayoutInflater();
+
         for (int i = 0; i < Note.getNotes().size(); i++) {
-            TextView tVnoteTitle = new TextView(getContext());
-            //tVnoteTitle.setText(Note.getNotes()[i].getTitle());
+            /*TextView tVnoteTitle = new TextView(getContext());
             tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
             tVnoteTitle.setTextSize(20);
-            //tVnoteTitle.setSingleLine(true);
-            linearLayout.addView(tVnoteTitle);
+            linearLayout.addView(tVnoteTitle);*/
+
+            // Get element from one_line_note.xml
+            View item = inflater.inflate(R.layout.one_line_note, linearLayout, false);
+            // Find here needed elements
+            TextView tVnoteTitle = item.findViewById(R.id.tv_one_line_note_title);
+            tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
+            tVnoteTitle.setTextSize(20);
+            linearLayout.addView(item);
 
             final int index = i;
 
