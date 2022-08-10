@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Note implements Parcelable, iNote  {
+public class Note implements Parcelable, iNote {
 
     // статический массив - когда мы запускаем прилож, мы в сатическом инициализаторе инициализируем
     // массив из 10 заметок. Проходим по кажд элементу массива и через ФАБРИЧНЫЙ МЕТОД инициализируем
@@ -57,6 +57,7 @@ public class Note implements Parcelable, iNote  {
         // Он при передаче посылки СОХРАНИТСЯ! (идентификаторы НЕ ПОПЛЫВУТ)
         id = ++counter;
     }
+
     // статический блок инициализации:
     // отрабатывает 1 раз перед стартом В ПЕРВУЮ ОЧЕРЕДЬ
     static {
