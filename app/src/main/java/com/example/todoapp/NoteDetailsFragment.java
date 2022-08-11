@@ -105,7 +105,8 @@ public class NoteDetailsFragment extends Fragment {
                                 Note.getNotes().add(deletedNote);
                                 //updateData();*/
                             .show();
-                    updateData();
+                    /***/
+                         //   updateData();
 
                     if (!isLandscape()) {
                         requireActivity().getSupportFragmentManager().popBackStack(); // ТОЛЬКО В ПОРТРЕТНОМ РЕЖИМЕ
@@ -172,7 +173,8 @@ public class NoteDetailsFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     note.setTitle(tV_title.getText().toString());
-                    updateData();
+                    /***/
+                    //updateData();
                 }
 
                 @Override
@@ -191,7 +193,8 @@ public class NoteDetailsFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     note.setDescription(tV_description.getText().toString());
-                    updateData();
+                    /***/
+                    //updateData();
                 }
 
                 @Override
@@ -207,14 +210,15 @@ public class NoteDetailsFragment extends Fragment {
         }
     }
 
-    private void updateData() {
+    /***/
+    /*private void updateData() {
         ListOfTitlesFragment listOfTitlesFragment = (ListOfTitlesFragment) requireActivity().getSupportFragmentManager()
                 .getFragments().stream()
                 .filter(fragment -> fragment instanceof ListOfTitlesFragment)
                 .findFirst()
                 .get();
         listOfTitlesFragment.initNotes();
-    }
+    }*/
 
     // Фабричный метод создания фрагмента
     // Фрагменты рекомендуется создавать через фабричные методы

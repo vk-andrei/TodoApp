@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         initToolBar(isLandscape());
 
         if (savedInstanceState == null) {
+            Log.d("TAG", "MainActivity: onCreate: create ListOfFragments");
             ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
             FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
             mFragmentTransaction

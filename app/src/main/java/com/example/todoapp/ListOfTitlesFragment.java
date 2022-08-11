@@ -6,32 +6,42 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ListOfTitlesFragment extends Fragment {
 
     Note note;
-    View dataContainer;
+    View dataContainer; //////////??????????????
+    List<Note> noteList;
+
+    private RecyclerView recyclerView;
+    private RecyclerViewAdapter mAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     public ListOfTitlesFragment() {
     }
 
-    @Override // РАЗОБРАТЬСЯ!!!!!!!!!!!!!!
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         if (note == null) {
@@ -52,9 +62,55 @@ public class ListOfTitlesFragment extends Fragment {
     @Override // CALLBACK - вызывается когда происходит попытка создания ФРАГМЕНТА
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_of_titles, container, false);
+
+        Log.d("TAG", "ListOfTitlesFragment: onCreateView.");
+        View v = inflater.inflate(R.layout.fragment_list_of_titles, container, false);
+        recyclerView = v.findViewById(R.id.rv_notes_list);
+
+        noteList = Note.getNotes();
+        Log.d("TAG", "ListOfTitlesFragment: noteList: " + noteList);
+
+        initRecyclerView(recyclerView, noteList);
+
+        if (savedInstanceState != null) {
+            Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
+            Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
+            note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
+            //note = savedInstanceState.getParcelable(SELECTED_NOTE);
+        }
+
+        if (isLandscape()) {
+            showNoteDetailsFragmentLandscape(note);
+        }
+
+        return v;
     }
+
+    private void initRecyclerView(RecyclerView recyclerView, List<Note> noteList) {
+
+        recyclerView.setHasFixedSize(true);
+
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        Log.d("TAG", "initRecyclerView: setLayoutManager: " + linearLayoutManager);
+
+        mAdapter = new RecyclerViewAdapter(noteList, getContext());
+        recyclerView.setAdapter(mAdapter);
+        Log.d("TAG", "initRecyclerView: setAdapter: " + mAdapter);
+
+
+        mAdapter.setItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(getContext(), String.format("Position - %d", position), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //initPopupmenu(linearLayout, tVnoteTitle, index);
+
+
+    }
+
 
     private boolean isLandscape() {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
@@ -64,6 +120,7 @@ public class ListOfTitlesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+   /*
         if (savedInstanceState != null) {
             Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
             Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
@@ -72,17 +129,20 @@ public class ListOfTitlesFragment extends Fragment {
             //note = savedInstanceState.getParcelable(SELECTED_NOTE);
         }
 
-        dataContainer = view.findViewById(R.id.fragment_list_of_notes_container);
+        //dataContainer = view.findViewById(R.id.fragment_list_of_notes_container);
+        dataContainer = view.findViewById(R.id.rv_notes_list);
         initNotes(dataContainer);
 
         if (isLandscape()) {
             //showNoteDetailsFragmentLandscape(selectedIndex);
             showNoteDetailsFragmentLandscape(note);
-        }
+        }                                                                    */
     }
 
-    // ПЕРЕГРУЖЕННЫЙ МЕТОД (????????????? для чего?)
-    public void initNotes() {
+
+
+    /*public void initNotes() {
+        //initNotes(dataContainer);
         initNotes(dataContainer);
     }
 
@@ -93,14 +153,14 @@ public class ListOfTitlesFragment extends Fragment {
         // заполняем его значениями и добавляем на экран.
         // Note.getNotes() - array of our NOTES
 
-        // При помощи этого объекта будем доставать элементы, спрятанные в item.xml
+        // При помощи этого объекта будем доставать элементы, спрятанные в one_line_note.xml
         LayoutInflater inflater = getLayoutInflater();
 
         for (int i = 0; i < Note.getNotes().size(); i++) {
-            /*TextView tVnoteTitle = new TextView(getContext());
+            *//*TextView tVnoteTitle = new TextView(getContext());
             tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
             tVnoteTitle.setTextSize(20);
-            linearLayout.addView(tVnoteTitle);*/
+            linearLayout.addView(tVnoteTitle);*//*
 
             // Get element from one_line_note.xml
             View item = inflater.inflate(R.layout.one_line_note, linearLayout, false);
@@ -119,7 +179,8 @@ public class ListOfTitlesFragment extends Fragment {
                 showNoteDetailsFragment(Note.getNotes().get(index));
             });
         }
-    }
+    }*/
+
 
     // Тут Меню POPUP нужно нам чтобы УДАЛИТЬ элемент:
     // а именно: удалить из коллекции И удалить текстовое поле с ним немедленно по кот. кликаем
@@ -127,7 +188,7 @@ public class ListOfTitlesFragment extends Fragment {
     // 1. рутовое View. Контейнер где это все нах-ся
     // 2. каком элементе мы его вызываем
     // 3. index заметки
-    @SuppressLint("NonConstantResourceId")
+/*    @SuppressLint("NonConstantResourceId")
     private void initPopupmenu(View rootView, TextView tv, int index) {
         tv.setOnLongClickListener(v -> {
             Activity activity = requireActivity();
@@ -154,7 +215,7 @@ public class ListOfTitlesFragment extends Fragment {
             popupMenu.show();
             return true;
         });
-    }
+    }*/
 
 
     private void showNoteDetailsFragment(Note note) {
