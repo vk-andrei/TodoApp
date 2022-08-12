@@ -32,7 +32,9 @@ public class ListOfTitlesFragment extends Fragment {
 
     Note note;
     View dataContainer; //////////??????????????
-    List<Note> noteList;
+    //List<Note> noteList;
+    //private List<NoteCard> noteCardList;
+
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter mAdapter;
@@ -43,14 +45,14 @@ public class ListOfTitlesFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-
+/*
         if (note == null) {
             if (Note.getNotes().size() > 0) {
                 note = Note.getNotes().get(0);
             }
         }
 
-        outState.putParcelable(SELECTED_NOTE, note);
+        outState.putParcelable(SELECTED_NOTE, note);*/
         super.onSaveInstanceState(outState);
     }
 
@@ -66,13 +68,14 @@ public class ListOfTitlesFragment extends Fragment {
         Log.d("TAG", "ListOfTitlesFragment: onCreateView.");
         View v = inflater.inflate(R.layout.fragment_list_of_titles, container, false);
         recyclerView = v.findViewById(R.id.rv_notes_list);
-
+/*
         noteList = Note.getNotes();
-        Log.d("TAG", "ListOfTitlesFragment: noteList: " + noteList);
+*/
+        CardSource noteCardSource = new CardSourceImpl(getResources()).init();
 
-        initRecyclerView(recyclerView, noteList);
+        initRecyclerView(recyclerView, noteCardSource);
 
-        if (savedInstanceState != null) {
+       /* if (savedInstanceState != null) {
             Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
             Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
             note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
@@ -81,12 +84,12 @@ public class ListOfTitlesFragment extends Fragment {
 
         if (isLandscape()) {
             showNoteDetailsFragmentLandscape(note);
-        }
+        }*/
 
         return v;
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, List<Note> noteList) {
+    private void initRecyclerView(RecyclerView recyclerView, CardSource noteCardSource) {
 
         recyclerView.setHasFixedSize(true);
 
@@ -94,12 +97,13 @@ public class ListOfTitlesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         Log.d("TAG", "initRecyclerView: setLayoutManager: " + linearLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(noteList, getContext());
+        mAdapter = new RecyclerViewAdapter(noteCardSource, getContext());
         recyclerView.setAdapter(mAdapter);
         Log.d("TAG", "initRecyclerView: setAdapter: " + mAdapter);
 
 
         mAdapter.setItemClickListener(new OnItemClickListener() {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(getContext(), String.format("Position - %d", position), Toast.LENGTH_SHORT).show();
@@ -107,8 +111,6 @@ public class ListOfTitlesFragment extends Fragment {
         });
 
         //initPopupmenu(linearLayout, tVnoteTitle, index);
-
-
     }
 
 

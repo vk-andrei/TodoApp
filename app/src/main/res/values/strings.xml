@@ -18,9 +18,28 @@
     <string name="find_menu">Find note</string>
     <string name="email">vk-andrei@mail.ru</string>
     <string name="share_menu">Share</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel_text">UNDO</string>
     <string name="default_title">default title</string>
+
+    <string name="title0">Note 0</string>
+    <string name="title1">Note 1</string>
+    <string name="title2">Note 2</string>
+    <string name="title3">Note 3</string>
+    <string name="title4">Note 4</string>
+    <string name="title5">Note 5</string>
+    <string name="title6">Note 6</string>
+    <string name="title7">Note 7</string>
+
+    <string name="description0">Description 0</string>
+    <string name="description1">Description 1</string>
+    <string name="description2">Description 2</string>
+    <string name="description3">Description 3</string>
+    <string name="description4">Description 4</string>
+    <string name="description5">Description 5</string>
+    <string name="description6">Description 6</string>
+    <string name="description7">Description 7</string>
+
 
 </resources>

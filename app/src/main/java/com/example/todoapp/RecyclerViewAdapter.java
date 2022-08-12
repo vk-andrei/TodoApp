@@ -15,15 +15,15 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private List<Note> noteList;
+    //private List<Note> noteList;
+    private CardSource noteCardSource;
     private Context context;
     private OnItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(List<Note> noteList, Context context) {
-        this.noteList = noteList;
+    public RecyclerViewAdapter(CardSource noteCardSource, Context context) {
+        this.noteCardSource = noteCardSource;
         this.context = context;
-        Log.d("TAG", "RecyclerViewAdapter: constructor: noteList: " + noteList);
-
+        Log.d("TAG", "RecyclerViewAdapter: constructor: noteList: " + noteCardSource);
     }
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
@@ -50,17 +50,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // Вынести на экран, используя ViewHolder
         Log.d("TAG", "RecyclerViewAdapter: onBindViewHolder.");
 
-        holder.tv_note_title.setText(noteList.get(position).getTitle());
-        holder.tv_note_date.setText(noteList.get(position).getDateTime().toString());
-
+        holder.setData(noteCardSource.getNoteCard(position));
     }
 
     @Override
     public int getItemCount() {
-        Log.d("TAG", "RecyclerViewAdapter: getItemCount: noteList.size(): " + noteList.size());
-        return noteList.size();
+        Log.d("TAG", "RecyclerViewAdapter: getItemCount: noteList.size(): " + noteCardSource.size());
+        return noteCardSource.size();
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder { // ссылка на one_line_note
 
@@ -76,6 +73,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_note_date = itemView.findViewById(R.id.tv_one_line_note_data);
             cardNoteView = itemView.findViewById(R.id.cv_one_line_note);
 
+            // Обработчик нажатий на этом ViewHolder
             cardNoteView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,7 +83,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 }
             });
+        }
 
+        public void setData(NoteCard noteCard) {
+            tv_note_title.setText(noteCard.getTitle());
+            tv_note_date.setText(noteCard.getDateTime().toString());  // ?
         }
     }
 }
