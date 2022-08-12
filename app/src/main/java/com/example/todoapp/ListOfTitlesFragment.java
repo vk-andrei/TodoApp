@@ -51,7 +51,6 @@ public class ListOfTitlesFragment extends Fragment {
                 note = Note.getNotes().get(0);
             }
         }
-
         outState.putParcelable(SELECTED_NOTE, note);*/
         super.onSaveInstanceState(outState);
     }
