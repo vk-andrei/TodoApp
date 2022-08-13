@@ -1,9 +1,11 @@
-package com.example.todoapp;
+package com.example.todoapp.data;
 
 import android.content.res.Resources;
 
-import java.time.LocalDateTime;
+import com.example.todoapp.R;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CardSourceImpl implements CardSource {
@@ -21,7 +23,7 @@ public class CardSourceImpl implements CardSource {
         String[] noteTitles = resources.getStringArray(R.array.titles);
         String[] noteDescriptions = resources.getStringArray(R.array.descriptions);
         for (int i = 0; i < noteIds.length; i++) {
-            noteCardList.add(new NoteCard(noteIds[i], noteTitles[i], noteDescriptions[i], LocalDateTime.now()));
+            noteCardList.add(new NoteCard(noteIds[i], noteTitles[i], noteDescriptions[i], Calendar.getInstance().getTime()));
         }
         return this;
     }
@@ -34,5 +36,25 @@ public class CardSourceImpl implements CardSource {
     @Override
     public int size() {
         return noteCardList.size();
+    }
+
+    @Override
+    public void addNoteCard(NoteCard noteCard) {
+        noteCardList.add(noteCard);
+    }
+
+    @Override
+    public void delNoteCard(int position) {
+        noteCardList.remove(position);
+    }
+
+    @Override
+    public void updateNoteCard(int position, NoteCard noteCard) {
+        noteCardList.set(position, noteCard);
+    }
+
+    @Override
+    public void clearNoteCards() {
+        noteCardList.clear();
     }
 }

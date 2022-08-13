@@ -1,11 +1,10 @@
-package com.example.todoapp;
+package com.example.todoapp.ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -16,28 +15,36 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import com.example.todoapp.R;
+import com.example.todoapp.observe.Publisher;
+import com.example.todoapp.ui.ListOfTitlesFragment;
+import com.example.todoapp.util.DialogAlertExitFragment;
 import com.google.android.material.navigation.NavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
+    private Navigation navigation;
+    private Publisher publisher = new Publisher();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        navigation = new Navigation(getSupportFragmentManager());
         initToolBar(isLandscape());
 
         if (savedInstanceState == null) {
             Log.d("TAG", "MainActivity: onCreate: create ListOfFragments");
-            ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
+            /*ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
             FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
             mFragmentTransaction
                     .add(R.id.main_container, listOfTitlesFragment)
-                    .commit();
+                    .commit();*/
+            getNavigation().addFragment(ListOfTitlesFragment.newInstance(), false);
         }
     }
 
@@ -45,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private void initToolBar(boolean isLandscape) {
         Toolbar toolbar = findViewById(R.id.mine_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // ЧТО ЭТО ДЕЛАЕТ?
+        getSupportActionBar().setHomeButtonEnabled(true);      // ЧТО ЭТО ДЕЛАЕТ?
         // DRAWER зависит от TOOLBAR поэтому засунем ему тулбар
         if (!isLandscape) {
             initDrawerToolBar(toolbar);
@@ -52,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDrawerToolBar(Toolbar toolbar) {
-
 
         drawerLayout = findViewById(R.id.drawer_layout);
         // Создаем ActionBarDrawerToggle
@@ -117,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    // МЕНЮ СПРАВА (три точки)
 
-    @Override
+    // МЕНЮ СПРАВА (три точки)
+/*  @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // ПРИМЕНЯЕМ МЕНЮ (НАДУВАЕМ)
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -152,16 +160,16 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private void openFindNote() {
+*/
+    public void openFindNote() {
         Toast.makeText(this, "TODO FIND Note", Toast.LENGTH_SHORT).show();
     }
 
-    private void openSettingsFragment() {
+    public void openSettingsFragment() {
         Toast.makeText(this, "TODO SETTINGS fragment", Toast.LENGTH_SHORT).show();
     }
 
-    private void openAboutFragment() {
+    public void openAboutFragment() {
         AboutFragment aboutFragment = new AboutFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm
@@ -175,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "TODO adding a new note", Toast.LENGTH_SHORT).show();
     }
 
-    private void share() {
+    public void share() {
         Toast.makeText(this, "TODO SHARE a note", Toast.LENGTH_SHORT).show();
     }
 
@@ -191,6 +199,21 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    // ДЛЯ ЧЕГО ????????????????????????
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 
 }

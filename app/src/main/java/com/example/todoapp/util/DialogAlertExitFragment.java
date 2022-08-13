@@ -1,4 +1,4 @@
-package com.example.todoapp;
+package com.example.todoapp.util;
 
 import android.app.Activity;
 import android.app.AlertDialog;

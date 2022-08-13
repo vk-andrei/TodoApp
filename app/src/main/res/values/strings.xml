@@ -40,6 +40,8 @@
     <string name="description5">Description 5</string>
     <string name="description6">Description 6</string>
     <string name="description7">Description 7</string>
+    <string name="clear_menu">Clear ALL</string>
+    <string name="update_menu_popup">update</string>
 
 
 </resources>

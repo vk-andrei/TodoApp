@@ -28,7 +28,7 @@ import java.util.Optional;
 
 public class NoteDetailsFragment extends Fragment {
 
-    static final String SELECTED_NOTE = "note";
+    /*static final String SELECTED_NOTE = "note";
     private Note note;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -65,10 +65,10 @@ public class NoteDetailsFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         // Например, хотим, чтобы меню EXIT не было доступно в нашем фрагменте
- /*       MenuItem menuItemExit = menu.findItem(R.id.menu_action_exit);
+ *//*       MenuItem menuItemExit = menu.findItem(R.id.menu_action_exit);
         if (menuItemExit != null) {
             menuItemExit.setVisible(false);
-        }*/
+        }*//*
         // И меню ABOUT тоже уберем:
         MenuItem menuItemAbout = menu.findItem(R.id.menu_action_about);
         if (menuItemAbout != null) {
@@ -101,11 +101,11 @@ public class NoteDetailsFragment extends Fragment {
                     View view = getView();
                     assert view != null;
                     Snackbar.make(view, "Note " + note.getTitle() + " was deleted", Snackbar.LENGTH_SHORT)
-                            /*.setAction(R.string.cancel_text, v -> {
+                            *//*.setAction(R.string.cancel_text, v -> {
                                 Note.getNotes().add(deletedNote);
-                                //updateData();*/
+                                //updateData();*//*
                             .show();
-                    /***/
+                    *//***//*
                          //   updateData();
 
                     if (!isLandscape()) {
@@ -151,11 +151,11 @@ public class NoteDetailsFragment extends Fragment {
             if (paramNote != null) {
                 // Проверим существует ли еще заметка?
                 Optional<Note> selectedNote = Note.getNotes().stream().filter(note1 -> note1.getId() == paramNote.getId()).findFirst();
-                /*if (selectedNote.isPresent()) {
+                *//*if (selectedNote.isPresent()) {
                     note = selectedNote.get();
                 } else {
                     note = Note.getNotes().get(0);
-                }*/
+                }*//*
                 // ТОЖЕ САМОЕ:
                 note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
             } else { // САМ ДОБАВИЛ. ПРАВИЛЬНО ЖЕ????
@@ -173,7 +173,7 @@ public class NoteDetailsFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     note.setTitle(tV_title.getText().toString());
-                    /***/
+                    *//***//*
                     //updateData();
                 }
 
@@ -193,7 +193,7 @@ public class NoteDetailsFragment extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     note.setDescription(tV_description.getText().toString());
-                    /***/
+                    *//***//*
                     //updateData();
                 }
 
@@ -210,15 +210,15 @@ public class NoteDetailsFragment extends Fragment {
         }
     }
 
-    /***/
-    /*private void updateData() {
+    *//***//*
+    *//*private void updateData() {
         ListOfTitlesFragment listOfTitlesFragment = (ListOfTitlesFragment) requireActivity().getSupportFragmentManager()
                 .getFragments().stream()
                 .filter(fragment -> fragment instanceof ListOfTitlesFragment)
                 .findFirst()
                 .get();
         listOfTitlesFragment.initNotes();
-    }*/
+    }*//*
 
     // Фабричный метод создания фрагмента
     // Фрагменты рекомендуется создавать через фабричные методы
@@ -230,5 +230,5 @@ public class NoteDetailsFragment extends Fragment {
         args.putParcelable(SELECTED_NOTE, note);
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 }

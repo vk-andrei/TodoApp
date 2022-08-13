@@ -1,5 +1,6 @@
-package com.example.todoapp;
+package com.example.todoapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,9 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.example.todoapp.R;
+import com.example.todoapp.data.CardSource;
+import com.example.todoapp.data.NoteCard;
+import com.example.todoapp.ui.OnItemClickListener;
+
+import java.text.SimpleDateFormat;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
@@ -19,15 +26,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private CardSource noteCardSource;
     private Context context;
     private OnItemClickListener itemClickListener;
+    private Fragment fragment;
+    private int menuPosition;
 
-    public RecyclerViewAdapter(CardSource noteCardSource, Context context) {
+    public RecyclerViewAdapter(CardSource noteCardSource, Fragment fragment) {
         this.noteCardSource = noteCardSource;
-        this.context = context;
+        this.fragment = fragment;
         Log.d("TAG", "RecyclerViewAdapter: constructor: noteList: " + noteCardSource);
     }
 
     public void setItemClickListener(OnItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
     }
 
     @NonNull
@@ -61,9 +74,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder { // ссылка на one_line_note
 
-        private final TextView tv_note_title;
-        private final TextView tv_note_date;
-        private final CardView cardNoteView;
+        private TextView tv_note_id;
+        private TextView tv_note_title;
+        private TextView getTv_note_description;
+        private TextView tv_note_date;
+        private CardView cardNoteView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -83,11 +98,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 }
             });
+
+            registerContextMenu(itemView);
+
+    /* // НУЖНО - ЕСЛИ НАДО ОТКРЫВАТЬ ТАКОЕ МЕНЮ НА КЛИКАБЕЛЬНОМ ЭЛЕМЕНТЕ
+            cardNoteView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    menuPosition = getLayoutPosition();
+                    itemView.showContextMenu(20, 20);
+                    return true;                }            });*/
         }
 
+        private void registerContextMenu(View itemView) {
+            if (fragment != null) {
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        menuPosition = getLayoutPosition();
+                        //Toast.makeText(v.getContext(), "pos - " + menuPosition, Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                });
+                fragment.registerForContextMenu(itemView);
+            }
+        }
+
+        @SuppressLint("SimpleDateFormat")
         public void setData(NoteCard noteCard) {
             tv_note_title.setText(noteCard.getTitle());
-            tv_note_date.setText(noteCard.getDateTime().toString());  // ?
+            tv_note_date.setText(new SimpleDateFormat("dd-MM-yy").format(noteCard.getDateTime()));
         }
     }
 }

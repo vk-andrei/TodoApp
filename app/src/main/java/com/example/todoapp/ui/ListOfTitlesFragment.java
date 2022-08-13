@@ -1,52 +1,60 @@
-package com.example.todoapp;
-
-import static com.example.todoapp.NoteDetailsFragment.SELECTED_NOTE;
+package com.example.todoapp.ui;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.example.todoapp.R;
+import com.example.todoapp.adapters.RecyclerViewAdapter;
+import com.example.todoapp.data.CardSource;
+import com.example.todoapp.data.CardSourceImpl;
+import com.example.todoapp.data.NoteCard;
+import com.example.todoapp.observe.Observer;
+import com.example.todoapp.observe.Publisher;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Calendar;
 
 public class ListOfTitlesFragment extends Fragment {
 
-    Note note;
-    View dataContainer; //////////??????????????
-    //List<Note> noteList;
-    //private List<NoteCard> noteCardList;
-
+    private static final int DEFAULT_DURATION = 500;
+    private CardSource noteCardSource;
 
     private RecyclerView recyclerView;
     private RecyclerViewAdapter mAdapter;
     private LinearLayoutManager linearLayoutManager;
 
-    public ListOfTitlesFragment() {
+    private Navigation navigation;
+    private Publisher publisher;
+
+    // признак, что при повторном открытии фрагмента (возврате из фрагмента, добавляющего запись)
+    // надо прыгнуть на последнюю запись
+    private boolean moveToLastPosition;
+
+
+    public static ListOfTitlesFragment newInstance() {
+        return new ListOfTitlesFragment();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-/*
-        if (note == null) {
+/*    if (note == null) {
             if (Note.getNotes().size() > 0) {
                 note = Note.getNotes().get(0);
             }
@@ -58,6 +66,26 @@ public class ListOfTitlesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Получим источник данных для списка (перенесли сюда из onCreateView)
+        noteCardSource = new CardSourceImpl(getResources()).init();
+    }
+
+    // Called when a fragment is first attached to its context.
+    // Фрагмент цепляется к АКТИВИТИ. Поскольку у нас одна активити, то мы получаем из неё паблишер,
+    // при помощи которого будем посылать сигнал при завершении фрагмента
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity) context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
     }
 
     @Override // CALLBACK - вызывается когда происходит попытка создания ФРАГМЕНТА
@@ -66,40 +94,50 @@ public class ListOfTitlesFragment extends Fragment {
 
         Log.d("TAG", "ListOfTitlesFragment: onCreateView.");
         View v = inflater.inflate(R.layout.fragment_list_of_titles, container, false);
-        recyclerView = v.findViewById(R.id.rv_notes_list);
-/*
-        noteList = Note.getNotes();
-*/
-        CardSource noteCardSource = new CardSourceImpl(getResources()).init();
 
-        initRecyclerView(recyclerView, noteCardSource);
+        initView(v);
+        setHasOptionsMenu(true);
 
-       /* if (savedInstanceState != null) {
+       /*if (savedInstanceState != null) {
             Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
             Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
             note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
-            //note = savedInstanceState.getParcelable(SELECTED_NOTE);
-        }
-
-        if (isLandscape()) {
-            showNoteDetailsFragmentLandscape(note);
-        }*/
+            //note = savedInstanceState.getParcelable(SELECTED_NOTE);}
+        if (isLandscape()) {showNoteDetailsFragmentLandscape(note);}*/
 
         return v;
     }
 
-    private void initRecyclerView(RecyclerView recyclerView, CardSource noteCardSource) {
+    private void initView(View view) {
+        recyclerView = view.findViewById(R.id.rv_notes_list);
+        // Поскольку onCreateView запускается каждый раз при возврате в фрагмент, данные надо
+        // создавать один раз. Поэтому перенесли в onCreate
+        //noteCardSource = new CardSourceImpl(getResources()).init();
 
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         Log.d("TAG", "initRecyclerView: setLayoutManager: " + linearLayoutManager);
 
-        mAdapter = new RecyclerViewAdapter(noteCardSource, getContext());
+        mAdapter = new RecyclerViewAdapter(noteCardSource, this);
         recyclerView.setAdapter(mAdapter);
         Log.d("TAG", "initRecyclerView: setAdapter: " + mAdapter);
 
+        // Установим анимацию
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(DEFAULT_DURATION);
+        animator.setRemoveDuration(DEFAULT_DURATION);
+        recyclerView.setItemAnimator(animator);
+
+        if (moveToLastPosition) {
+            recyclerView.smoothScrollToPosition(noteCardSource.size() - 1);
+            moveToLastPosition = false;
+        }
 
         mAdapter.setItemClickListener(new OnItemClickListener() {
             @SuppressLint("DefaultLocale")
@@ -218,8 +256,7 @@ public class ListOfTitlesFragment extends Fragment {
         });
     }*/
 
-
-    private void showNoteDetailsFragment(Note note) {
+    /*private void showNoteDetailsFragment(Note note) {
         this.note = note;
         if (isLandscape()) {
             showNoteDetailsFragmentLandscape(note);
@@ -245,6 +282,99 @@ public class ListOfTitlesFragment extends Fragment {
         ft.replace(R.id.main_container_details, mNoteDetailsFragment); // замена ФРАГМЕНТА
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
+    }*/
+
+    // МЕНЮ СПРАВА (три точки). Убрал с MainActivity, вставил сюда. ХЗ ЗАЧЕМ
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
+    @SuppressLint({"NonConstantResourceId", "NotifyDataSetChanged"})
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int idItemMenu = item.getItemId();
+        switch (idItemMenu) {
+            case R.id.menu_add_new_note:
+/*                noteCardSource.addNoteCard(new NoteCard(noteCardSource.size(), "Note " + noteCardSource.size(),
+                        "Description " + noteCardSource.size(), Calendar.getInstance().getTime()));
+                mAdapter.notifyItemInserted(noteCardSource.size() - 1);
+                recyclerView.scrollToPosition(noteCardSource.size() - 1);*/
+
+                navigation.addFragment(NoteCardFragment.newInstance(), true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNoteCard(NoteCard noteCard) {
+                        noteCardSource.addNoteCard(noteCard);
+                        mAdapter.notifyItemInserted(noteCardSource.size() - 1);
+                        // это сигнал, чтобы вызванный метод onCreateView перепрыгнул на конец списка
+                        moveToLastPosition = true;
+                        // После того как завершится редактирование элемента в новом фрагменте, мы вернёмся в метод
+                        // обратного вызова наблюдателя Observer.updateCardData(), система начнёт обновлять этот
+                        // фрагмент и вызовет метод onCreateView() повторно. Нам придётся пересоздать все элементы, а
+                        // также адаптер. Поэтому вводится признак moveToLastPosition, означающий, что мы только что
+                        // добавляли данные, чтобы перепрыгнуть на последний элемент. В методе initRecyclerView()
+                        // вызывается переход на последний элемент.
+                    }
+                });
+                return true;
+            case R.id.menu_action_settings:
+                ((MainActivity) requireActivity()).openSettingsFragment();
+                return true;
+
+            case R.id.menu_action_clear:
+                noteCardSource.clearNoteCards();
+                mAdapter.notifyDataSetChanged();
+                return true;
+
+            case R.id.menu_action_about:
+                ((MainActivity) requireActivity()).openAboutFragment();
+                return true;
+            case R.id.menu_action_find:
+                ((MainActivity) requireActivity()).openFindNote();
+                return true;
+            case R.id.menu_action_exit:
+                ((MainActivity) requireActivity()).finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = requireActivity().getMenuInflater();
+        inflater.inflate(R.menu.note_context_menu, menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        int position = mAdapter.getMenuPosition(); // смотри на каком элементе был КЛИК
+        switch (item.getItemId()) {
+            case R.id.action_context_menu_update:
+
+                /*NoteCard editedNote = noteCardSource.getNoteCard(position);
+                noteCardSource.updateNoteCard(position, new NoteCard(editedNote.getId(),
+                        editedNote.getTitle() + " 1",
+                        editedNote.getDescription() + 1, Calendar.getInstance().getTime()));
+                mAdapter.notifyItemChanged(position);*/
+
+                navigation.addFragment(NoteCardFragment.newInstance(noteCardSource.getNoteCard(position)), true);
+                publisher.subscribe(new Observer() {
+                    @Override
+                    public void updateNoteCard(NoteCard noteCard) {
+                        noteCardSource.updateNoteCard(position, noteCard);
+                        mAdapter.notifyItemChanged(position);
+                    }
+                });
+                return true;
+
+            case R.id.action_context_menu_delete:
+                noteCardSource.delNoteCard(position);
+                mAdapter.notifyItemRemoved(position);
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 }

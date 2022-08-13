@@ -1,19 +1,14 @@
 package com.example.todoapp;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.RequiresApi;
-
-import java.io.Serializable;
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Random;
 
-public class Note implements Parcelable, iNote {
+public class Note { //implements Parcelable, iNote {
+/*
 
     // статический массив - когда мы запускаем прилож, мы в сатическом инициализаторе инициализируем
     // массив из 10 заметок. Проходим по кажд элементу массива и через ФАБРИЧНЫЙ МЕТОД инициализируем
@@ -93,7 +88,6 @@ public class Note implements Parcelable, iNote {
         return new Note(title, description, dateTime);
     }
 
-    /**** PARCELABLE ****/
     @Override
     public int describeContents() {
         return 0;
@@ -126,6 +120,7 @@ public class Note implements Parcelable, iNote {
             return new Note[size];
         }
     };
-    /*****************************************/
+
+*/
 
 }

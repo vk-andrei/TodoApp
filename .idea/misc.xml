@@ -20,14 +20,16 @@
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_dialog_alert_exit.xml" value="0.24739583333333334" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_list_of_titles.xml" value="0.34444444444444444" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note.xml" value="0.2630208333333333" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_card.xml" value="0.25416666666666665" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_note_details.xml" value="0.24270833333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/fragment_to_do.xml" value="0.35989583333333336" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/item.xml" value="0.23645833333333333" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/item_note.xml" value="0.190625" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/one_line_note.xml" value="0.24259259259259258" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/layout/one_line_note.xml" value="0.35989583333333336" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_header_menu.xml" value="0.24635416666666668" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_menu.xml" value="0.24635416666666668" />
-        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/main_menu.xml" value="0.27239583333333334" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/drawer_menu.xml" value="1.0" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/main_menu.xml" value="0.27589743589743587" />
+        <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/note_context_menu.xml" value="0.35885416666666664" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/note_menu.xml" value="0.2604166666666667" />
         <entry key="..\:/_GEEK/Android/ToDoApp/app/src/main/res/menu/note_popup.xml" value="0.2328125" />
       </map>
