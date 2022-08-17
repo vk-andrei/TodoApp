@@ -23,25 +23,20 @@ import java.text.SimpleDateFormat;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     //private List<Note> noteList;
-    private CardSource noteCardSource;
-    private Context context;
-    private OnItemClickListener itemClickListener;
-    private Fragment fragment;
+    private final CardSource noteCardSource;
+    private final Fragment fragment;
+    private OnItemClickListener itemClickListener; // Слушатель устанавливается извне
     private int menuPosition;
 
+    // Передаем в конструктор источник данных (тут массив, но м.б. и запрос к БД)
     public RecyclerViewAdapter(CardSource noteCardSource, Fragment fragment) {
         this.noteCardSource = noteCardSource;
         this.fragment = fragment;
         Log.d("TAG", "RecyclerViewAdapter: constructor: noteList: " + noteCardSource);
     }
 
-    public void setItemClickListener(OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
-    }
-
-    public int getMenuPosition() {
-        return menuPosition;
-    }
+    // Создать новый элемент пользовательского интерфейса
+    // Запускается менеджером
 
     @NonNull
     @Override
@@ -50,13 +45,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         // Через Inflater
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.one_line_note, parent, false);
+        // Здесь можно установить разные параметры
         MyViewHolder holder = new MyViewHolder(view);
         Log.d("TAG", "RecyclerViewAdapter: onCreateViewHolder: holder: " + holder);
         return holder;
     }
-
     // Заменить данные в пользовательском интерфейсе
     // Вызывается менеджером
+
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.MyViewHolder holder, int position) {
         // Получить элемент из источника данных (БД, интернет...)
@@ -65,13 +61,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.setData(noteCardSource.getNoteCard(position));
     }
-
     @Override
     public int getItemCount() {
         Log.d("TAG", "RecyclerViewAdapter: getItemCount: noteList.size(): " + noteCardSource.size());
         return noteCardSource.size();
     }
 
+    // Сеттер слушателя нажатий
+    public void setItemClickListener(OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    public int getMenuPosition() {
+        return menuPosition;
+    }
+
+    // Этот класс хранит связь м/у данными и элементами View
     public class MyViewHolder extends RecyclerView.ViewHolder { // ссылка на one_line_note
 
         private TextView tv_note_id;
@@ -88,6 +93,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tv_note_date = itemView.findViewById(R.id.tv_one_line_note_data);
             cardNoteView = itemView.findViewById(R.id.cv_one_line_note);
 
+            registerContextMenu(itemView);
+
             // Обработчик нажатий на этом ViewHolder
             cardNoteView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -98,8 +105,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     }
                 }
             });
-
-            registerContextMenu(itemView);
 
     /* // НУЖНО - ЕСЛИ НАДО ОТКРЫВАТЬ ТАКОЕ МЕНЮ НА КЛИКАБЕЛЬНОМ ЭЛЕМЕНТЕ
             cardNoteView.setOnLongClickListener(new View.OnLongClickListener() {

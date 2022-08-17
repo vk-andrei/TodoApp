@@ -19,9 +19,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-public class NoteCardFragment extends Fragment {
+public class
+NoteCardFragment extends Fragment {
 
     private static final String ARG_NOTE_CARD = "Param_NoteCard";
     private NoteCard noteCard;   // Данные по карточке заметки
@@ -50,8 +50,9 @@ public class NoteCardFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            assert getArguments() != null; // ДЛЯ ЧЕГО ЭТО ??????????????????
+        //if (savedInstanceState() != null) { КАКАЯ РАЗНИЦА???????????
+        if (getArguments() != null) {
+            //assert getArguments() != null; // ДЛЯ ЧЕГО ЭТО ??????????????????
             noteCard = getArguments().getParcelable(ARG_NOTE_CARD);
         }
     }
@@ -77,15 +78,15 @@ public class NoteCardFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_note_card, container);
+        View view = inflater.inflate(R.layout.fragment_note_card, container, false);
         initView(view);
         // Если noteCard - пустая, то это ДОБАВЛЕНИЕ ЗАМЕТКИ
+        // а если нет, то ===> ЗАПОЛНЯЕМ VIEW!!!
         if (noteCard != null) {   /// TODO РАЗБЕРИСЬ ТУТ
-            addingNoteView();
+            fillView();
         }
         return view;
     }
-
 
     // Здесь соберем данные из VIEWs
     @Override
@@ -102,6 +103,7 @@ public class NoteCardFragment extends Fragment {
     }
 
     private NoteCard collectNoteCard() {
+        // TODO разобраться с АЙДИШНИКАМИ
         int note_id = Integer.parseInt(this.note_id.getText().toString());
         String note_title = this.note_title.getText().toString();
         String note_description = this.note_description.getText().toString();
@@ -126,7 +128,7 @@ public class NoteCardFragment extends Fragment {
         note_datePicker = view.findViewById(R.id.datePicker_input);
     }
 
-    private void addingNoteView() {
+    private void fillView() {
         note_id.setText("100");              // TODO next id
         note_title.setText(noteCard.getTitle());
         note_description.setText(noteCard.getDescription());
@@ -141,6 +143,4 @@ public class NoteCardFragment extends Fragment {
                 calendar.get(Calendar.DAY_OF_MONTH),
                 null);
     }
-
-
 }

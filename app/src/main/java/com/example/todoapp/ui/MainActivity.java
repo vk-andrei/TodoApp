@@ -37,15 +37,18 @@ public class MainActivity extends AppCompatActivity {
         navigation = new Navigation(getSupportFragmentManager());
         initToolBar(isLandscape());
 
+        getNavigation().addFragment(ListOfTitlesFragment.newInstance(), false);
+
+/*
         if (savedInstanceState == null) {
             Log.d("TAG", "MainActivity: onCreate: create ListOfFragments");
             /*ListOfTitlesFragment listOfTitlesFragment = new ListOfTitlesFragment();
             FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
             mFragmentTransaction
                     .add(R.id.main_container, listOfTitlesFragment)
-                    .commit();*/
+                    .commit();
             getNavigation().addFragment(ListOfTitlesFragment.newInstance(), false);
-        }
+        }*/
     }
 
     // Инициализация своего КАСТОМНОГО ТУЛБАРА
@@ -56,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);      // ЧТО ЭТО ДЕЛАЕТ?
         // DRAWER зависит от TOOLBAR поэтому засунем ему тулбар
         if (!isLandscape) {
-            initDrawerToolBar(toolbar);
+            // initDrawerToolBar(toolbar);
         }
     }
 
-    private void initDrawerToolBar(Toolbar toolbar) {
+    /*private void initDrawerToolBar(Toolbar toolbar) {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         // Создаем ActionBarDrawerToggle
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+*/
     // OLD
     private void showAlertDialogExit() {
         new AlertDialog.Builder(this)
@@ -169,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "TODO SETTINGS fragment", Toast.LENGTH_SHORT).show();
     }
 
+    //TODO переделать под NAVIGATION
     public void openAboutFragment() {
         AboutFragment aboutFragment = new AboutFragment();
         FragmentManager fm = getSupportFragmentManager();
@@ -187,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "TODO SHARE a note", Toast.LENGTH_SHORT).show();
     }
 
+/*
 
     @Override
     public void onBackPressed() {
@@ -200,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+*/
 
     // ДЛЯ ЧЕГО ????????????????????????
     @Override

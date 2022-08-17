@@ -52,16 +52,16 @@ public class ListOfTitlesFragment extends Fragment {
         return new ListOfTitlesFragment();
     }
 
-    @Override
+    /*@Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-/*    if (note == null) {
+    if (note == null) {
             if (Note.getNotes().size() > 0) {
                 note = Note.getNotes().get(0);
             }
         }
-        outState.putParcelable(SELECTED_NOTE, note);*/
+        outState.putParcelable(SELECTED_NOTE, note);
         super.onSaveInstanceState(outState);
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,20 +73,6 @@ public class ListOfTitlesFragment extends Fragment {
     // Called when a fragment is first attached to its context.
     // Фрагмент цепляется к АКТИВИТИ. Поскольку у нас одна активити, то мы получаем из неё паблишер,
     // при помощи которого будем посылать сигнал при завершении фрагмента
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        MainActivity activity = (MainActivity) context;
-        navigation = activity.getNavigation();
-        publisher = activity.getPublisher();
-    }
-
-    @Override
-    public void onDetach() {
-        navigation = null;
-        publisher = null;
-        super.onDetach();
-    }
 
     @Override // CALLBACK - вызывается когда происходит попытка создания ФРАГМЕНТА
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,6 +94,21 @@ public class ListOfTitlesFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity) context;
+        navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        publisher = null;
+        super.onDetach();
+    }
+
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.rv_notes_list);
         // Поскольку onCreateView запускается каждый раз при возврате в фрагмент, данные надо
@@ -120,10 +121,12 @@ public class ListOfTitlesFragment extends Fragment {
     private void initRecyclerView() {
         recyclerView.setHasFixedSize(true);
 
+        // Будем работать со встроенным менеджером
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         Log.d("TAG", "initRecyclerView: setLayoutManager: " + linearLayoutManager);
 
+        // Установим адаптер
         mAdapter = new RecyclerViewAdapter(noteCardSource, this);
         recyclerView.setAdapter(mAdapter);
         Log.d("TAG", "initRecyclerView: setAdapter: " + mAdapter);

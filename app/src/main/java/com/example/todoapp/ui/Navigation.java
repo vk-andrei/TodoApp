@@ -8,7 +8,7 @@ import com.example.todoapp.R;
 
 public class Navigation {
     // Выделяем отдел. класс навигации, чтобы разгрузить активити. Туда перенесём создание фрагмента.
-    private FragmentManager fragmentManager;
+    private final FragmentManager fragmentManager;
 
     public Navigation(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
