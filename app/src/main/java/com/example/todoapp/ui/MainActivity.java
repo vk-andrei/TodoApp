@@ -59,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);      // ЧТО ЭТО ДЕЛАЕТ?
         // DRAWER зависит от TOOLBAR поэтому засунем ему тулбар
         if (!isLandscape) {
-            // initDrawerToolBar(toolbar);
+            initDrawerToolBar(toolbar);
         }
     }
 
-    /*private void initDrawerToolBar(Toolbar toolbar) {
+    private void initDrawerToolBar(Toolbar toolbar) {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         // Создаем ActionBarDrawerToggle
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-*/
+
     // OLD
     private void showAlertDialogExit() {
         new AlertDialog.Builder(this)
@@ -172,15 +172,16 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "TODO SETTINGS fragment", Toast.LENGTH_SHORT).show();
     }
 
-    //TODO переделать под NAVIGATION
+    //TODO переделать под NAVIGATION. ----->  DONE
     public void openAboutFragment() {
         AboutFragment aboutFragment = new AboutFragment();
-        FragmentManager fm = getSupportFragmentManager();
+        /*FragmentManager fm = getSupportFragmentManager();
         fm
                 .beginTransaction()
                 .addToBackStack("")
                 .add(R.id.main_container, aboutFragment)
-                .commit();
+                .commit();*/
+        getNavigation().addFragment(aboutFragment, true);
     }
 
     private void addNewNote() {
