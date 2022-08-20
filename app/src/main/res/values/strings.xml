@@ -42,6 +42,8 @@
     <string name="description7">Description 7</string>
     <string name="clear_menu">Clear ALL</string>
     <string name="update_menu_popup">update</string>
+    <string name="text_title">title</string>
+    <string name="text_description">Description</string>
 
 
 </resources>

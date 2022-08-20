@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +35,8 @@ NoteCardFragment extends Fragment {
     private TextInputEditText note_title;
     private TextInputEditText note_description;
     private DatePicker note_datePicker;
+
+    private Button btnOk;
 
     // Для редактирования данных
     public static NoteCardFragment newInstance(NoteCard noteCard) {
@@ -108,13 +112,18 @@ NoteCardFragment extends Fragment {
     }
 
     private NoteCard collectNoteCard() {
-        // TODO разобраться с АЙДИШНИКАМИ
+        // TODO разобраться с АЙДИШНИКАМИ. DONE!!!
+
         int note_id = Integer.parseInt(this.note_id.getText().toString());
         String note_title = this.note_title.getText().toString();
         String note_description = this.note_description.getText().toString();
         //Date date = Calendar.getInstance().getTime();
         Date date = getDateFromDatePicker();
         //return new NoteCard(note_id, note_title, note_description, date);
+
+        if (note_title.equals("")) {
+            note_title = "default title " + this.note_id.getText().toString();
+        }
         return new NoteCard(note_id, note_title, note_description, date);
     }
 
@@ -132,6 +141,14 @@ NoteCardFragment extends Fragment {
         note_title = view.findViewById(R.id.textInputEditText_title);
         note_description = view.findViewById(R.id.textInputEditText_description);
         note_datePicker = view.findViewById(R.id.datePicker_input);
+        btnOk = view.findViewById(R.id.btn_fragment_note_Ok);
+        btnOk.setOnClickListener(v -> {
+            if (note_title.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Give a name to note!", Toast.LENGTH_SHORT).show();
+            } else {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
     }
 
     private void fillView() {
