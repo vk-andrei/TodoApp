@@ -1,5 +1,7 @@
 package com.example.todoapp.data;
 
+import java.util.List;
+
 public interface CardSource {
 
     NoteCard getNoteCard(int position);
@@ -13,5 +15,9 @@ public interface CardSource {
     void updateNoteCard(int position, NoteCard noteCard);
 
     void clearNoteCards();
+
+    List<NoteCard> getNoteCardList();
+
+    void setNoteCardList (List<NoteCard> noteCardList);
 
 }

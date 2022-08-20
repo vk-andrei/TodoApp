@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.example.todoapp.data.NoteCard;
 import com.example.todoapp.observe.Observer;
 import com.example.todoapp.observe.Publisher;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ListOfTitlesFragment extends Fragment {
@@ -47,33 +49,31 @@ public class ListOfTitlesFragment extends Fragment {
     // надо прыгнуть на последнюю запись
     private boolean moveToLastPosition;
 
-
     public static ListOfTitlesFragment newInstance() {
         return new ListOfTitlesFragment();
     }
 
-    /*@Override
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-    if (note == null) {
-            if (Note.getNotes().size() > 0) {
-                note = Note.getNotes().get(0);
-            }
-        }
-        outState.putParcelable(SELECTED_NOTE, note);
         super.onSaveInstanceState(outState);
-    }*/
+        outState.putParcelableArrayList("KEY_NOTES", (ArrayList<? extends Parcelable>) noteCardSource.getNoteCardList());
+        //Log.d("TAG", "nSaveInstanceState: noteCardSource" + noteCardSource);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Получим источник данных для списка (перенесли сюда из onCreateView)
-        noteCardSource = new CardSourceImpl(getResources()).init();
+        noteCardSource = new CardSourceImpl().getInstanceDATA();
+
+        if (savedInstanceState != null) {
+            noteCardSource.setNoteCardList(savedInstanceState.getParcelableArrayList("KEY_NOTES"));
+        }
     }
 
     // Called when a fragment is first attached to its context.
     // Фрагмент цепляется к АКТИВИТИ. Поскольку у нас одна активити, то мы получаем из неё паблишер,
     // при помощи которого будем посылать сигнал при завершении фрагмента
-
     @Override // CALLBACK - вызывается когда происходит попытка создания ФРАГМЕНТА
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -380,4 +380,5 @@ public class ListOfTitlesFragment extends Fragment {
         }
         return super.onContextItemSelected(item);
     }
+
 }

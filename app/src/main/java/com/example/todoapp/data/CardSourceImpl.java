@@ -12,15 +12,21 @@ import java.util.List;
 
 public class CardSourceImpl implements CardSource {
 
-    private List<NoteCard> noteCardList;
-    private Resources resources; // для доступа к ресурсам (массивы и проч)
+    private List<NoteCard> noteCardList = new ArrayList<>();
+    private static CardSourceImpl instanceNotesDATA = null;
+    //private Resources resources; // для доступа к ресурсам (массивы и проч)
 
-    public CardSourceImpl(Resources resources) {
-        noteCardList = new ArrayList<>(10);
-        this.resources = resources;
+    public CardSourceImpl getInstanceDATA() {
+        if (instanceNotesDATA == null) {
+            instanceNotesDATA = new CardSourceImpl();
+        }
+        return instanceNotesDATA;
     }
 
-    public CardSourceImpl init() {
+    /*public CardSourceImpl() {
+        noteCardList = new ArrayList<>(10);
+        //this.resources = resources;}*/
+    /*public CardSourceImpl init() {
         int[] noteIds = resources.getIntArray(R.array.id);
         Log.d("TAG", "CARDSOURCE init: ids:" + Arrays.toString(noteIds));
         String[] noteTitles = resources.getStringArray(R.array.titles);
@@ -29,6 +35,16 @@ public class CardSourceImpl implements CardSource {
             noteCardList.add(new NoteCard(noteIds[i], noteTitles[i], noteDescriptions[i], Calendar.getInstance().getTime()));
         }
         return this;
+    }*/
+
+    @Override
+    public List<NoteCard> getNoteCardList() {
+        return noteCardList;
+    }
+
+    @Override
+    public void setNoteCardList(List<NoteCard> noteCardList) {
+        this.noteCardList = noteCardList;
     }
 
     @Override
