@@ -31,7 +31,6 @@ import com.example.todoapp.observe.Observer;
 import com.example.todoapp.observe.Publisher;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ListOfTitlesFragment extends Fragment {
 
