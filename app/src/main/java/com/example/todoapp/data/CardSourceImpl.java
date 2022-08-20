@@ -16,7 +16,7 @@ public class CardSourceImpl implements CardSource {
     private static CardSourceImpl instanceNotesDATA = null;
     //private Resources resources; // для доступа к ресурсам (массивы и проч)
 
-    public CardSourceImpl getInstanceDATA() {
+    public static CardSourceImpl getInstanceDATA() {
         if (instanceNotesDATA == null) {
             instanceNotesDATA = new CardSourceImpl();
         }

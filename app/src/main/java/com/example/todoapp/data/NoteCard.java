@@ -8,14 +8,22 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 public class NoteCard implements Parcelable {
+
+    //private static int count = 0;
     private int id;
     private String title;
     private String description;
     private Date dateTime;
 
 
+/*    public NoteCard () {
+        this.id = count++;
+    }*/
+
+
     public NoteCard(int id, String title, String description, Date dateTime) {
         this.id = id;
+        //this();
         this.title = title;
         this.description = description;
         this.dateTime = dateTime;

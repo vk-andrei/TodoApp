@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.todoapp.R;
+import com.example.todoapp.data.CardSourceImpl;
 import com.example.todoapp.data.NoteCard;
 import com.example.todoapp.observe.Publisher;
 import com.google.android.material.textfield.TextInputEditText;
@@ -26,6 +27,7 @@ NoteCardFragment extends Fragment {
     private static final String ARG_NOTE_CARD = "Param_NoteCard";
     private NoteCard noteCard;   // Данные по карточке заметки
     private Publisher publisher; // Паблишер с пом, кот будем обмениваться данными
+    CardSourceImpl noteCardList = CardSourceImpl.getInstanceDATA();
 
     private TextView note_id;
     private TextInputEditText note_title;
@@ -80,10 +82,13 @@ NoteCardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_card, container, false);
         initView(view);
-        // Если noteCard - пустая, то это ДОБАВЛЕНИЕ ЗАМЕТКИ
+        // Если noteCard - пустая, то это ДОБАВЛЕНИЕ ЗАМЕТКИ (private NoteCard collectNoteCard())
         // а если нет, то ===> ЗАПОЛНЯЕМ VIEW!!!
         if (noteCard != null) {   /// TODO РАЗБЕРИСЬ ТУТ
             fillView();
+        } else {
+            // NEW NOTE! Then -> OnStop -> collectCard
+            note_id.setText(String.valueOf(noteCardList.size()));
         }
         return view;
     }
@@ -109,6 +114,7 @@ NoteCardFragment extends Fragment {
         String note_description = this.note_description.getText().toString();
         //Date date = Calendar.getInstance().getTime();
         Date date = getDateFromDatePicker();
+        //return new NoteCard(note_id, note_title, note_description, date);
         return new NoteCard(note_id, note_title, note_description, date);
     }
 
@@ -129,7 +135,7 @@ NoteCardFragment extends Fragment {
     }
 
     private void fillView() {
-        note_id.setText("100");              // TODO next id
+        note_id.setText(String.valueOf(noteCard.getId()));              // TODO next id
         note_title.setText(noteCard.getTitle());
         note_description.setText(noteCard.getDescription());
         initDatePicker(noteCard.getDateTime());
