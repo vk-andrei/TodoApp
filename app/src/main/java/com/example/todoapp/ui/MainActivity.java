@@ -128,42 +128,6 @@ public class MainActivity extends AppCompatActivity {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-
-    // МЕНЮ СПРАВА (три точки)
-/*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // ПРИМЕНЯЕМ МЕНЮ (НАДУВАЕМ)
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Обрабатываем события по нажатиям на пункты МЕНЮ
-
-        int idItemMenu = item.getItemId();
-
-        switch (idItemMenu) {
-            case R.id.menu_add_new_note:
-                addNewNote();
-                return true;
-            case R.id.menu_action_settings:
-                openSettingsFragment();
-                return true;
-            case R.id.menu_action_about:
-                openAboutFragment();
-                return true;
-            case R.id.menu_action_find:
-                openFindNote();
-                return true;
-            case R.id.menu_action_exit:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
     public void openFindNote() {
         Toast.makeText(this, "TODO FIND Note", Toast.LENGTH_SHORT).show();
     }

@@ -2,6 +2,7 @@ package com.example.todoapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -29,8 +30,13 @@ import com.example.todoapp.data.CardSourceImpl;
 import com.example.todoapp.data.NoteCard;
 import com.example.todoapp.observe.Observer;
 import com.example.todoapp.observe.Publisher;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class ListOfTitlesFragment extends Fragment {
 
@@ -48,6 +54,11 @@ public class ListOfTitlesFragment extends Fragment {
     // надо прыгнуть на последнюю запись
     private boolean moveToLastPosition;
 
+    // Для сохранения данных в SharedPreferences
+    private static final String KEY_ShPref = "KEY_ShPref";
+    private SharedPreferences sharedPref;
+
+
     public static ListOfTitlesFragment newInstance() {
         return new ListOfTitlesFragment();
     }
@@ -62,7 +73,7 @@ public class ListOfTitlesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Получим источник данных для списка (перенесли сюда из onCreateView)
+        // Получим источник данных для списка (перенесли сюда из onCreateView). Создается ОДИН РАЗ!
         noteCardSource = new CardSourceImpl().getInstanceDATA();
 
         if (savedInstanceState != null) {
@@ -113,11 +124,13 @@ public class ListOfTitlesFragment extends Fragment {
         // Поскольку onCreateView запускается каждый раз при возврате в фрагмент, данные надо
         // создавать один раз. Поэтому перенесли в onCreate
         //noteCardSource = new CardSourceImpl(getResources()).init();
-
         initRecyclerView();
     }
 
     private void initRecyclerView() {
+
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
+
         recyclerView.setHasFixedSize(true);
 
         // Будем работать со встроенным менеджером
@@ -137,9 +150,25 @@ public class ListOfTitlesFragment extends Fragment {
         recyclerView.setItemAnimator(animator);
 
         if (moveToLastPosition) {
-            recyclerView.smoothScrollToPosition(noteCardSource.size() - 1);
-            moveToLastPosition = false;
+            if (noteCardSource.size() > 1) {
+                recyclerView.smoothScrollToPosition(noteCardSource.size() - 1);
+                moveToLastPosition = false;
+            }
         }
+        /** SAVE in SHARED PREFERENCES **/
+        String saveData = sharedPref.getString(KEY_ShPref, null);
+        if (saveData == null) {
+            Toast.makeText(this.getContext(), "Empty DATA", Toast.LENGTH_SHORT).show();
+        } else {
+            try {
+                Type type = new TypeToken<List<NoteCard>>() {
+                }.getType();
+                mAdapter.setNewData(new GsonBuilder().create().fromJson(saveData, type));
+            } catch (Exception e) {
+                Toast.makeText(this.getContext(), "DATA ERROR", Toast.LENGTH_SHORT).show();
+            }
+        }
+        /*********************************/
 
         mAdapter.setItemClickListener(new OnItemClickListener() {
             @SuppressLint("DefaultLocale")
@@ -161,42 +190,32 @@ public class ListOfTitlesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-   /*
-        if (savedInstanceState != null) {
+   /*  if (savedInstanceState != null) {
             Note paramNote = savedInstanceState.getParcelable(SELECTED_NOTE);
             Optional<Note> selectedNote = Note.getNotes().stream().filter(n -> n.getId() == paramNote.getId()).findFirst();
 
             note = selectedNote.orElseGet(() -> Note.getNotes().get(0));
             //note = savedInstanceState.getParcelable(SELECTED_NOTE);
         }
-
         //dataContainer = view.findViewById(R.id.fragment_list_of_notes_container);
         dataContainer = view.findViewById(R.id.rv_notes_list);
         initNotes(dataContainer);
-
         if (isLandscape()) {
             //showNoteDetailsFragmentLandscape(selectedIndex);
             showNoteDetailsFragmentLandscape(note);
         }                                                                    */
     }
-
-
-
     /*public void initNotes() {
         //initNotes(dataContainer);
-        initNotes(dataContainer);
-    }
-
+        initNotes(dataContainer);    }
     private void initNotes(View view) {
         LinearLayout linearLayout = (LinearLayout) view;
         linearLayout.removeAllViews(); // ????????????????????????????
         // В этом цикле создаём элемент TextView,
         // заполняем его значениями и добавляем на экран.
         // Note.getNotes() - array of our NOTES
-
         // При помощи этого объекта будем доставать элементы, спрятанные в one_line_note.xml
         LayoutInflater inflater = getLayoutInflater();
-
         for (int i = 0; i < Note.getNotes().size(); i++) {
             *//*TextView tVnoteTitle = new TextView(getContext());
             tVnoteTitle.setText(Note.getNotes().get(i).getTitle());
@@ -221,8 +240,6 @@ public class ListOfTitlesFragment extends Fragment {
             });
         }
     }*/
-
-
     // Тут Меню POPUP нужно нам чтобы УДАЛИТЬ элемент:
     // а именно: удалить из коллекции И удалить текстовое поле с ним немедленно по кот. кликаем
     // для этого сделаем метод, в кот передадим:
@@ -257,7 +274,6 @@ public class ListOfTitlesFragment extends Fragment {
             return true;
         });
     }*/
-
     /*private void showNoteDetailsFragment(Note note) {
         this.note = note;
         if (isLandscape()) {
@@ -295,6 +311,9 @@ public class ListOfTitlesFragment extends Fragment {
     @SuppressLint({"NonConstantResourceId", "NotifyDataSetChanged"})
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
+
         int idItemMenu = item.getItemId();
         switch (idItemMenu) {
             case R.id.menu_add_new_note:
@@ -317,6 +336,12 @@ public class ListOfTitlesFragment extends Fragment {
                         // также адаптер. Поэтому вводится признак moveToLastPosition, означающий, что мы только что
                         // добавляли данные, чтобы перепрыгнуть на последний элемент. В методе initRecyclerView()
                         // вызывается переход на последний элемент.
+
+                        /** SAVING data in json **/
+                        // Кидаем в JSON строку в кот будут ВСЕ ЗАМЕТКИ
+                        String jsonAfterAddNewCard = new GsonBuilder().create().toJson(noteCardSource.getNoteCardList());
+                        sharedPref.edit().putString(KEY_ShPref, jsonAfterAddNewCard).apply();
+                        /*************************/
                     }
                 });
                 return true;
@@ -327,6 +352,13 @@ public class ListOfTitlesFragment extends Fragment {
             case R.id.menu_action_clear:
                 noteCardSource.clearNoteCards();
                 mAdapter.notifyDataSetChanged();
+
+                /** SAVING data in json **/
+                // Кидаем в JSON строку в кот будут ВСЕ ЗАМЕТКИ
+                String jsonAfterClear = new GsonBuilder().create().toJson(noteCardSource.getNoteCardList());
+                sharedPref.edit().putString(KEY_ShPref, jsonAfterClear).apply();
+                /*************************/
+
                 return true;
 
             case R.id.menu_action_about:
@@ -352,15 +384,12 @@ public class ListOfTitlesFragment extends Fragment {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+        //getActivity().getSharedPreferences(); - можно несколько файлов для хранения организовать
+        sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE);
+
         int position = mAdapter.getMenuPosition(); // смотри на каком элементе был КЛИК
         switch (item.getItemId()) {
             case R.id.action_context_menu_update:
-
-                /*NoteCard editedNote = noteCardSource.getNoteCard(position);
-                noteCardSource.updateNoteCard(position, new NoteCard(editedNote.getId(),
-                        editedNote.getTitle() + " 1",
-                        editedNote.getDescription() + 1, Calendar.getInstance().getTime()));
-                mAdapter.notifyItemChanged(position);*/
 
                 navigation.addFragment(NoteCardFragment.newInstance(noteCardSource.getNoteCard(position)), true);
                 publisher.subscribe(new Observer() {
@@ -368,6 +397,13 @@ public class ListOfTitlesFragment extends Fragment {
                     public void updateNoteCard(NoteCard noteCard) {
                         noteCardSource.updateNoteCard(position, noteCard);
                         mAdapter.notifyItemChanged(position);
+
+                        /** SAVING data in json **/
+                        // Кидаем в JSON строку в кот будут ВСЕ ЗАМЕТКИ
+                        String jsonAfterUpdateCard = new GsonBuilder().create().toJson(noteCardSource.getNoteCardList());
+                        sharedPref.edit().putString(KEY_ShPref, jsonAfterUpdateCard).apply();
+                        /*************************/
+
                     }
                 });
                 return true;
@@ -375,6 +411,13 @@ public class ListOfTitlesFragment extends Fragment {
             case R.id.action_context_menu_delete:
                 noteCardSource.delNoteCard(position);
                 mAdapter.notifyItemRemoved(position);
+
+                /** SAVING data in json **/
+                // Кидаем в JSON строку в кот будут ВСЕ ЗАМЕТКИ
+                String jsonAfterDeletingCard = new GsonBuilder().create().toJson(noteCardSource.getNoteCardList());
+                sharedPref.edit().putString(KEY_ShPref, jsonAfterDeletingCard).apply();
+                /*************************/
+
                 return true;
         }
         return super.onContextItemSelected(item);

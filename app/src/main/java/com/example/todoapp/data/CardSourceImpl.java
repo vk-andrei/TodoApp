@@ -43,7 +43,7 @@ public class CardSourceImpl implements CardSource {
     }
 
     @Override
-    public void setNoteCardList(List<NoteCard> noteCardList) {
+    public void setNoteCardList(List<NoteCard> noteCardList) {   //setNewData
         this.noteCardList = noteCardList;
     }
 

@@ -19,6 +19,7 @@ import com.example.todoapp.data.NoteCard;
 import com.example.todoapp.ui.OnItemClickListener;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
@@ -35,9 +36,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d("TAG", "RecyclerViewAdapter: constructor: noteList: " + noteCardSource);
     }
 
+    // Метод, кот позволит нам ОБНОВИТЬ ДАННЫЕ в рамках адаптера. Мы передадим это по цепочке в
+    // метод CardSourceImpl
+    public void setNewData(List<NoteCard> noteCardList) {
+        this.noteCardSource.setNoteCardList(noteCardList);
+        notifyDataSetChanged();
+    }
+
     // Создать новый элемент пользовательского интерфейса
     // Запускается менеджером
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
