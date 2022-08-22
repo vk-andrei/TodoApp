@@ -2,6 +2,7 @@ package com.example.todoapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -361,6 +362,10 @@ public class ListOfTitlesFragment extends Fragment {
 
                 return true;
 
+            case R.id.menu_action_open_CalcApp:
+                Intent intentCalcApp = new Intent("myActionStartCalc");
+                startActivity(intentCalcApp);
+                return true;
             case R.id.menu_action_about:
                 ((MainActivity) requireActivity()).openAboutFragment();
                 return true;

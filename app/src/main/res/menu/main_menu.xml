@@ -22,8 +22,14 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_action_about"
+        android:id="@+id/menu_action_open_CalcApp"
         android:orderInCategory="4"
+        android:title="@string/open_calculator"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_action_about"
+        android:orderInCategory="5"
         android:title="@string/about_menu"
         app:showAsAction="never" />
 

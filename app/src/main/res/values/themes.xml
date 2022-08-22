@@ -16,16 +16,13 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-
         <!-- Customize your theme here. -->
         <item name="actionOverflowButtonStyle">@style/actionOverFlowButtonStyle</item>
         <item name="android:actionMenuTextColor">@color/white</item>
-
     </style>
 
     <style name="actionOverFlowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">@color/white</item>
     </style>
-
 
 </resources>

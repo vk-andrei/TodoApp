@@ -44,6 +44,7 @@
     <string name="update_menu_popup">update</string>
     <string name="text_title">title</string>
     <string name="text_description">Description</string>
+    <string name="open_calculator">Open Calculator</string>
 
 
 </resources>
